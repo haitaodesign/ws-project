@@ -15,3 +15,18 @@ export function getHomeData(){
         method:'post'
     })
 }
+
+export function getDeptData(){
+    return fetch({
+        url:'/getDepartment',
+        method:'post'
+    })
+}
+
+export function getGroupData(data){
+    return fetch({
+        url:'/getGroup',
+        method:'post',
+        data:data
+    })
+}
