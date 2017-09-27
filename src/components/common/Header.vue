@@ -19,19 +19,17 @@
   
 </template>
 <script>
-import Cookies from 'js-cookie'
 export default {
     data(){
         return{
-            userName:Cookies.get('userName')
+            userName:sessionStorage.getItem('userName')
         }
     },
     mounted(){
     },
     methods:{
         handleLogout(name){
-            Cookies.remove('isLogin');
-            Cookies.remove('userName');
+            sessionStorage.clear();
             this.$router.push('/Login');
         }
     }
