@@ -8,3 +8,10 @@ export function login(loginform){
         params:loginform
     });
 }
+
+export function getHomeData(){
+    return fetch({
+        url:'/getIndexInfo',
+        method:'post'
+    })
+}

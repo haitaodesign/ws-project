@@ -1,5 +1,5 @@
 // 导入api数据
-import {login} from '../../api/login'
+import {login} from '../../api/requestdata'
 
 const user = {
     state:{

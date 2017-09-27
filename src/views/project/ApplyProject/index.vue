@@ -9,7 +9,6 @@
   </div>
 </template>
 <script>
-import {Upload} from '../../../api/login';
 export default {
   
 }
