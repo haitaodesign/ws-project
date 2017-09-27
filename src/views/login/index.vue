@@ -3,12 +3,12 @@
         <Form ref="loginForm" :model="loginForm" :rules="loginRules"  class="login-form" inline>
             <h1 class="login-title">系统登录</h1>
             <Form-item prop="username">
-                <Input type="text" name="username" v-model="loginForm.username"  placeholder="username" size="large">
+                <Input type="text" name="username" v-model="loginForm.username"  placeholder="请输入用户名" size="large">
                     <Icon type="ios-person-outline" slot="prepend"></Icon>
                 </Input>
             </Form-item>
             <Form-item prop="password">
-                <Input type="password" name="password" v-model="loginForm.password" placeholder="Password" size="large">
+                <Input type="password" name="password" v-model="loginForm.password" placeholder="请输入密码" size="large">
                     <Icon type="ios-locked-outline" slot="prepend"></Icon>
                 </Input>
             </Form-item>
@@ -16,14 +16,13 @@
                 <Button type="primary" size="large" :loading="isLoading" @click="handleSubmit('loginForm')">
                     <span v-if="!isLoading">登录</span>
                     <span v-else>Loading...</span>
-                    </Button>
+                </Button>
             </Form-item>
         </Form>  
     </div>
 </template>
 <script>
-import Cookies from 'js-cookie'
-import {mapActions} from 'vuex'
+import {login} from '../../api/requestdata';
 export default {
   data(){
       return{
@@ -44,24 +43,28 @@ export default {
       }
   },
   methods:{
-      ...mapActions([
-        'Login'
-      ]),
-      handleSubmit(name){
-          this.$refs[name].validate((valid)=>{
-              if(valid){
-                  this.isLoading=true;
-                  this.$store.dispatch('Login',this.loginForm);
-                  Cookies.set('isLogin',true);
-                  Cookies.set('username',this.loginForm.username);
-                  // 密码验证成功之后，路由重定向
-                  this.isLoading=false;
-                  this.$router.push('/');
-              }else{
-                  this.$Message.error('表单验证失败！');
-              }
-          })
-      }
+        handleSubmit(name){
+            this.$refs[name].validate((valid)=>{
+                if(valid){
+                    this.isLoading=true;
+                        // 
+                        login(this.loginForm).then(res=>{
+                            this.isLoading=false;
+                            // 
+                            let username = res.data.data.userName;
+                            sessionStorage.setItem('userName',username);
+                            console.log(res.data.userName);
+                            console.log(res);
+                            this.$router.push('/');
+                        }).catch(err=>{
+                            this.$Message.error('系统异常，请重试！');
+                        })
+                    
+                }else{
+                    this.$Message.error('表单验证失败！');
+                }
+            })
+        }
   }
 }
 </script>
