@@ -18,13 +18,13 @@
          <Tabs class="home-tip">
             <TabPane label="逾期提醒" name="0">
                 <Row>
+                    <!-- 每个表格一个Col -->
                     <Col>
                         
                     </Col>
                 </Row>
             </TabPane>
         </Tabs>
-        
     </div>
 </template>
 <script>
