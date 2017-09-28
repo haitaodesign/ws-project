@@ -2,9 +2,8 @@
     <div>
         <PageTitle :BreadData="breadData"></PageTitle>
         <Tabs class="home-push">
-            <TabPane label="项目推送" name="0">
+            <TabPane label="项目推送" name="0" style="padding:10px;">
                 <Row :gutter="20">
-
                     <Col span="4">
                         <Card>
                             <p slot="title" class="home-center">我申请的项目</p>
@@ -70,7 +69,6 @@ export default {
     },
     data() {
         return {
-
             breadData: [{
                 name: '首页',
                 to: '/'
@@ -90,7 +88,7 @@ export default {
                 title: '进度',
                 key: "proprogress"
             }, {
-                title: "预期时间",
+                title: "逾期时间",
                 key: "betweenDays"
             }
             ],
@@ -108,7 +106,7 @@ export default {
                 title: '进度',
                 key: "taskprogress"
             }, {
-                title: "预期时间",
+                title: "逾期时间",
                 key: "betweenDays"
             }
             ],
@@ -126,14 +124,10 @@ export default {
                 title: '进度',
                 key: "subtaskprogress"
             }, {
-                title: "预期时间",
+                title: "逾期时间",
                 key: "betweenHours"
             }
             ],
-           
-           
-
-
         }
     },
     created() {
@@ -142,6 +136,10 @@ export default {
                 this.homeData = res.data.data[0];
                 console.log(res.data)
             }
+        })
+        .catch(res=>{
+            // 抛出异常跳入登录界面
+            console.log(res);
         })
     }
 }

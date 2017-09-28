@@ -3,7 +3,7 @@
     <vHeader></vHeader>
     <vSideBar></vSideBar>
     <div class="content">
-        <Card class="content-card" shadow>
+        <Card shadow>
             <router-view></router-view>
         </Card>
     </div>
@@ -25,7 +25,4 @@ export default {
 }
 </script>
 <style scoped>
-.content-card{
-    height: 100%;
-}
 </style>
