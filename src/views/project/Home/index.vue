@@ -45,15 +45,15 @@
                     <!-- 每个表格一个Col -->
                     <Col >
                      <!--  项目列表渲染 -->
-                        <Table border :columns="project" :data="this.homeData.infoList"></Table>
+                        <Table size='small' border :columns="project" :data="this.homeData.infoList"></Table>
                     </Col>
-                     <Col style='margin: 20px 0;'>
+                     <Col style='margin: 30px 0;'>
                      <!-- 任务渲染 -->
-                        <Table border :columns="task" :data="this.homeData.taskList"></Table>
+                        <Table size='small' border :columns="task" :data="this.homeData.taskList"></Table>
                     </Col>
                     <Col>
                     <!-- 子任务渲染 -->
-                        <Table border :columns="subtask" :data="this.homeData.subtaskList"></Table>
+                        <Table size='small' border :columns="subtask" :data="this.homeData.subtaskList"></Table>
                     </Col>
                 </Row>
             </TabPane>
