@@ -27,8 +27,8 @@ new Vue({
   router,
   store,
   created(){
-    this.checkLogin();
-    console.log(this.$axios ? 'Axios works!' :'no');
+    // this.checkLogin();
+    // console.log(this.$axios ? 'Axios works!' :'no');
   },
   template: '<App/>',
   components: { App },
