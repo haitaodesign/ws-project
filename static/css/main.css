@@ -24,7 +24,10 @@ body{
     overflow-y: auto;
 }
 .fl{
-
+    float: left;
+}
+.fr{
+    float: left;
 }
 .clearfix:after {
 	content: "";

@@ -30,3 +30,22 @@ export function getGroupData(data){
         data:data
     })
 }
+// 项目统计列表
+export function getselectOnPro(){
+    return fetch({
+      url:'/ProReport/selectOnPro',
+      method:'post',
+     
+})
+}
+// 日报
+export function getselectTaskReport(){
+    return fetch({
+        url:'/DayReport/selectTaskReport',
+        method:'post',
+        data:{
+            current:1,
+            pageSize:5 
+        }
+    })
+}
