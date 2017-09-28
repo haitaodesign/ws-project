@@ -38,10 +38,33 @@ export function getselectOnPro(){
      
 })
 }
-// 日报
+//项目日报
+export function getproReports(){
+    return fetch({
+        url:'/proReports',
+        method:'post',
+        data:{
+            current:1,
+            pageSize: 5
+        }
+    })
+}
+
+//任务日报
+// export function getselectTaskReport(){
+//     return fetch({
+//         url:'/selectTaskReport',
+//         method:'post',
+//         data:{
+//             current: 1,
+//             pageSize: 5
+//         }
+//     })
+// }
+// 日报（子任务日报）
 export function getselectTaskReport(){
     return fetch({
-        url:'/DayReport/selectTaskReport',
+        url:'/selectTaskReport',
         method:'post',
         data:{
             current:1,

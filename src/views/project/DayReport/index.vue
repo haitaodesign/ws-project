@@ -19,6 +19,7 @@
 <script>
 import PageTitle from '../../components/PageTitle'
 import {getselectTaskReport} from '../../../api/requestdata.js'
+import {getproReports} from '../../../api/requestdata'
 export default {
   components:{
     PageTitle
@@ -57,15 +58,22 @@ export default {
     }
   },
   created(){
-    //  this.timerData();
+     this.timerData();
   },
   methods:{
     timerData(){
+      //子任务日报
        getselectTaskReport().then(res=>{
-         if(res.data.code === 0){
+         if(res.data.code === 200){
            console.log(res.data)
+
          }
        })
+       //项目日报
+       getproReports().then(res=>{
+         console.log(res.data)
+       })
+
     },
   }
 }
