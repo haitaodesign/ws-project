@@ -66,13 +66,12 @@ import PageTitle from '../../components/PageTitle'
 import {getselectOnPro} from '../../../api/requestdata'
 export default {
   components:{
-    PageTitle
+    PageTitle,
   },
   data(){
    return{
       breadData:[{
         name:'项目统计',
-        to:"/"
       }],
       keys:'',
       selectType:'',
@@ -83,36 +82,35 @@ export default {
       selectman:'',
       selectpt:'',
       columns8:[
-        {
+       {
          title:"类型",
          key:"squad"
         },
-       {
+        {
          title:"产品",
          key:"sum1"
-       },{
+        },
+       {
          title:"活动",
          key:"sum2"
        }
       ],
       statistics:[],
       }
-   
-  },
+   },
   created(){
     this.initDate();
-    
-  },
+    },
   methods:{
     initDate(){
       getselectOnPro().then(res=>{
         if(res.data.code === 200){
           this.statistics = res.data.data;
+          console.log(this.statistics);
         }
       })
     },
-    
-  }
+   }
 }
 </script>
 <style scoped>
