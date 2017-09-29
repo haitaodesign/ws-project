@@ -2,8 +2,8 @@
   <div>
       <PageTitle :BreadData="breadData"></PageTitle>
       <Form :label-width="80">
-        <Tabs class="apply-baseinfo" >
-            <TabPane label="基本信息" name="0">
+        <!-- <Tabs class="apply-baseinfo" >
+            <TabPane label="基本信息" name="0"> -->
             <FormItem label="项目名称：">
               <Input placeholder="请输入"></Input>
             </FormItem>
@@ -14,18 +14,18 @@
               </Select>
             </FormItem>
              <FormItem label="上线时间：">
-                  <DatePicker type="datetime" :options="dateOptions" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择上线时间" :transfer="true"></DatePicker>
+                  <DatePicker type="datetime" :options="dateOptions" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择上线时间"></DatePicker>
             </FormItem>
             <FormItem label="下线时间：">
-                <DatePicker type="datetime" :options="dateOptions" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择下线时间" :transfer="true"></DatePicker>
+                <DatePicker type="datetime" :options="dateOptions" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择下线时间"></DatePicker>
             </FormItem>
             <FormItem label="项目概况：">
               <Input type="textarea" :rows="3" placeholder="请输入..."></Input>
             </FormItem>
-            </TabPane>
-        </Tabs>
-        <Tabs class="apply-baseinfo">
-            <TabPane label="参与部门" name="0">
+            <!-- </TabPane>
+        </Tabs> -->
+        <!-- <Tabs class="apply-baseinfo">
+            <TabPane label="参与部门" name="0"> -->
               <Button type="primary" @click="addGroup">添加</Button>
               <Button type="primary">删除</Button>
               <Table :data="squadData" :columns="squadColumns" class="apply-squad">
@@ -35,17 +35,17 @@
                     <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
                   </Upload>
               </FormItem>
-            </TabPane>
-        </Tabs>
+            <!-- </TabPane>
+        </Tabs> -->
         <Button type="primary">提交</Button>
       </Form>
       <Modal
         v-model="addshow"
         title="添加参与部门"
         @on-ok="ok('partInData')"
-        @on-cancel="cancel"
+        @on-cancel="cancel('partInData')"
         :loading="modalloading">
-        <Form ref="partInData" :model="partInData" :rules="partrules" :label-width="80">
+        <Form ref="partInData" :model="partInData" :rules="partrules" :label-width="100">
           <FormItem prop="Taskname" label="任务名称：">
               <Input placeholder="请输入任务名称" v-model="partInData.Taskname"></Input>
           </FormItem>
@@ -124,7 +124,10 @@ export default {
             {required:true,type:'date',message:'请填结束时间',trigger:'change'}
           ]
         },
-        modalloading:true
+        modalloading:true,
+        applyData:{
+          
+        }
     }
   },
   created(){
@@ -144,8 +147,8 @@ export default {
           }
       })
     },
-    cancel(){
-
+    cancel(name){
+      this.$refs[name].resetFields();
     },
     loadGroupData(item,callback){
       item.loading=true;
