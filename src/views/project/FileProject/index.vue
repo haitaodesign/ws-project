@@ -97,6 +97,7 @@ export default {
           render:(h,obj)=>{
             const proname = this. selectFinPro[obj.index].proname
             const prodeclare = this.selectFinPro[obj.index].prodeclare
+            console.log(prodeclare)
             return h('div',[
               h('div',proname),
               h('div', prodeclare)

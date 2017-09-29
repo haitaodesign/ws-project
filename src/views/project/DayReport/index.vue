@@ -10,6 +10,7 @@
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
+import proLogs from './proLogs'
 import {getselectTaskReport} from '../../../api/requestdata.js'
 import {getproReports} from '../../../api/requestdata'
 import {getselectSubtaskReport} from '../../../api/requestdata'
@@ -23,7 +24,22 @@ export default {
         name:'日报',
       }],
       button1:'项目日报',
-      columns1:[ 
+      columns1:[
+        {
+          type: 'expand',
+          width: 50,
+          render: (h,obj) =>{
+           const pro = this.proReports[obj.index].proLogs[obj.index].Emp
+            console.log(obj.row)
+            console.log(pro)
+            return h(proLogs, {
+              props: {
+                row: obj.row
+              }
+            })
+          }
+                    
+        }, 
         {
           title: '名称',
           key: 'proName'
@@ -40,15 +56,7 @@ export default {
           title: '进度',
           key: 'proProgres'
         },
-        {
-          title: '动态',
-          key: 'proLogs',
-          render:(h,obj)=>{
-            const row = obj.row;
-            console.log(row.proLogs);
-            return h('div',obj.index)
-          }
-        }
+       
       ],
       columns2:[ 
         {
@@ -95,7 +103,7 @@ export default {
         }
       ],
       proReports:[],
-      pro:'',
+      all:'',
       selectTaskReport:[],
       selectSubtaskRepor:[]
     }
@@ -109,6 +117,7 @@ export default {
       getproReports().then(res => {
         if (res.data.code === 200) {
           console.log(res.data.data)
+          this.all = res.data;
           this.proReports = res.data.data;
           // this.proReports.forEach(function(element,index) {
           //   this.pro = element.proLogs[index].Emp;

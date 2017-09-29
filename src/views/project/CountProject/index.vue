@@ -66,7 +66,7 @@ import PageTitle from '../../components/PageTitle'
 import {getselectOnPro} from '../../../api/requestdata'
 export default {
   components:{
-    PageTitle
+    PageTitle,
   },
   data(){
    return{
@@ -82,26 +82,25 @@ export default {
       selectman:'',
       selectpt:'',
       columns8:[
-        {
+       {
          title:"类型",
          key:"squad"
         },
-       {
+        {
          title:"产品",
          key:"sum1"
-       },{
+        },
+       {
          title:"活动",
          key:"sum2"
        }
       ],
       statistics:[],
       }
-   
-  },
+   },
   created(){
     this.initDate();
-    
-  },
+    },
   methods:{
     initDate(){
       getselectOnPro().then(res=>{
@@ -111,8 +110,7 @@ export default {
         }
       })
     },
-    
-  }
+   }
 }
 </script>
 <style scoped>
