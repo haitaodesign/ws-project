@@ -51,16 +51,16 @@ export function getproReports(){
 }
 
 //任务日报
-// export function getselectTaskReport(){
-//     return fetch({
-//         url:'/selectTaskReport',
-//         method:'post',
-//         data:{
-//             current: 1,
-//             pageSize: 5
-//         }
-//     })
-// }
+export function getselectSubtaskReport(){
+    return fetch({
+        url:'/selectSubtaskReport',
+        method:'post',
+        data:{
+            current: 1,
+            pageSize: 5
+        }
+    })
+}
 // 日报（子任务日报）
 export function getselectTaskReport(){
     return fetch({

@@ -108,6 +108,7 @@ export default {
       getselectOnPro().then(res=>{
         if(res.data.code === 200){
           this.statistics = res.data.data;
+          console.log(this.statistics);
         }
       })
     },

@@ -1,25 +1,18 @@
 <template>
 <div>
   <PageTitle :BreadData="breadData"></PageTitle>
-  <div class="home-push">
-      <Row>
-          <Col span="12">
-              
-          </Col>
-      </Row>
-      <RadioGroup v-model="button1" type="button" size='large' style='margin: 20px 0;'>
-            <Radio label="项目日报"></Radio>
-            <Radio label="任务日报"></Radio>
-            <Radio label="子任务日报"></Radio>
-      </RadioGroup>
-      <Table border :columns="columns1" :data="data1"></Table>
-  </div>
+    <Tabs value="name1">
+        <TabPane label="项目日报" name="name1"> <Table border :columns="columns1" :data="proReports"></Table></TabPane>
+        <TabPane label="任务日报" name="name2"> <Table border :columns="columns2" :data="selectTaskReport"></Table></TabPane>
+        <TabPane label="子任务日报" name="name3"> <Table border :columns="columns3" :data="selectSubtaskRepor"></Table></TabPane>
+    </Tabs>
 </div>    
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
 import {getselectTaskReport} from '../../../api/requestdata.js'
 import {getproReports} from '../../../api/requestdata'
+import {getselectSubtaskReport} from '../../../api/requestdata'
 export default {
   components:{
     PageTitle
@@ -34,27 +27,78 @@ export default {
       columns1:[ 
         {
           title: '名称',
-          key: 'name'
+          key: 'proName'
         },
         {
           title: '负责人',
-          key: 'age'
+          key: 'creater'
         },
         {
           title: '状态',
-          key: 'address'
+          key: 'proState'
         },
         {
           title: '进度',
-          key: 'address'
+          key: 'proProgres'
         },
         {
           title: '动态',
-          key: 'address'
-        }],
-        data1:[{
-
-        }]
+          key: 'proLogs',
+          render:(h,obj)=>{
+            const row = obj.row;
+            console.log(row.proLogs);
+            return h('div',obj.index)
+          }
+        }
+      ],
+      columns2:[ 
+        {
+          title: '名称',
+          key: 'taskName'
+        },
+        {
+          title: '负责人',
+          key: 'handler'
+        },
+        {
+          title: '状态',
+          key: 'taskState'
+        },
+        {
+          title: '进度',
+          key: 'taskProgress'
+        },
+        {
+          title: '动态',
+          key: 'taskLogs'
+        }
+      ],
+      columns3:[ 
+        {
+          title: '名称',
+          key: 'subtaskName'
+        },
+        {
+          title: '负责人',
+          key: 'subtaskHandler'
+        },
+        {
+          title: '状态',
+          key: 'subtaskState'
+        },
+        {
+          title: '进度',
+          key: 'subtaskProgress'
+        },
+        {
+          title: '动态',
+          key: 'subtaskLogs'
+        }
+      ],
+      proReports:[],
+      pro:'',
+      selectTaskReport:[],
+      selectSubtaskRepor:[]
     }
   },
   created(){
@@ -62,21 +106,34 @@ export default {
   },
   methods:{
     timerData(){
+      //项目日报
+      getproReports().then(res => {
+        if (res.data.code === 200) {
+          console.log(res.data.data)
+          this.proReports = res.data.data;
+          // this.proReports.forEach(function(element,index) {
+          //   this.pro = element.proLogs[index].Emp;
+          //   // console.log(this.pro)
+          // }, this);
+        }
+      })
+        //任务日报
+      getselectSubtaskReport().then(res => {
+        if (res.data.code === 200) {
+          this.selectSubtaskRepor = res.data.data;
+          //  console.log(this.selectSubtaskRepor)
+        }
+      })
       //子任务日报
-       getselectTaskReport().then(res=>{
-         if(res.data.code === 200){
-           console.log(res.data)
-
-         }
-       })
-       //项目日报
-       getproReports().then(res=>{
-         console.log(res.data)
-       })
-
-    },
+      getselectTaskReport().then(res => {
+        if (res.data.code === 200) {
+          this.selectTaskReport = res.data.data;
+          // console.log(this.selectTaskReport)
+        }
+      })
+     },
+    }
   }
-}
 </script>
 <style scoped>
 .home-push{
