@@ -134,6 +134,7 @@ export default {
         getHomeData().then(res => {
             if (res.data.code == 200) {
                 this.homeData = res.data.data[0];
+                console.log(this.homeData)
                 console.log(res.data)
             }
         })

@@ -30,3 +30,45 @@ export function getGroupData(data){
         data:data
     })
 }
+// 项目统计列表
+export function getselectOnPro(){
+    return fetch({
+      url:'/ProReport/selectOnPro',
+      method:'post',
+     
+})
+}
+//项目日报
+export function getproReports(){
+    return fetch({
+        url:'/proReports',
+        method:'post',
+        data:{
+            current:1,
+            pageSize: 5
+        }
+    })
+}
+
+//任务日报
+// export function getselectTaskReport(){
+//     return fetch({
+//         url:'/selectTaskReport',
+//         method:'post',
+//         data:{
+//             current: 1,
+//             pageSize: 5
+//         }
+//     })
+// }
+// 日报（子任务日报）
+export function getselectTaskReport(){
+    return fetch({
+        url:'/selectTaskReport',
+        method:'post',
+        data:{
+            current:1,
+            pageSize:5 
+        }
+    })
+}
