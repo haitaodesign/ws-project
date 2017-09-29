@@ -72,7 +72,6 @@ export default {
    return{
       breadData:[{
         name:'项目统计',
-        to:"/"
       }],
       keys:'',
       selectType:'',

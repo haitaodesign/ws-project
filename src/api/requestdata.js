@@ -72,3 +72,14 @@ export function getselectTaskReport(){
         }
     })
 }
+//归档项目列表
+export function getselectFinPro(data){
+    return fetch({
+        url:'/selectFinPro',
+        method:'post',
+        data:{
+            current:1,
+            pageSize:5  
+        }
+    })
+}

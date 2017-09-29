@@ -21,7 +21,6 @@ export default {
     return{
       breadData:[{
         name:'日报',
-        to:"/"
       }],
       button1:'项目日报',
       columns1:[ 
