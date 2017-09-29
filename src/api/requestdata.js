@@ -72,3 +72,12 @@ export function getselectTaskReport(){
         }
     })
 }
+
+export function submitApplyData(data){
+    return fetch({
+        url:'/applyProject',
+        method:'post',
+        data:data,
+        dataType:'json'
+    })
+}
