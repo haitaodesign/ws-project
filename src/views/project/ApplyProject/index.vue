@@ -2,6 +2,8 @@
   <div>
       <PageTitle :BreadData="breadData"></PageTitle>
       <Form :label-width="80">
+        <h3>基本信息</h3>
+        <hr style="">
         <!-- <Tabs class="apply-baseinfo" >
             <TabPane label="基本信息" name="0"> -->
             <FormItem label="项目名称：">
@@ -193,6 +195,10 @@ export default {
 }
 .apply-squad{
   margin: 10px 0 10px 0;
+}
+hr{
+  margin:10px 0 10px 0;
+  color: #e9eaec;
 }
 </style>
 

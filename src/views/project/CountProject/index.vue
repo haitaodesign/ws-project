@@ -50,23 +50,14 @@
                       </Col>
                   </Row>
               </FormItem>
-              <FormItem label="项目类型">
-                    <Select v-model="selectType" placeholder="请选择" style="width:200px">
-                        <Option value="beijing">北京市</Option>
-                        <Option value="shanghai">上海市</Option>
-                        <Option value="shenzhen">深圳市</Option>
-                    </Select>
-              </FormItem>
               <FormItem label="">
                   <Input v-model="keys" placeholder="请输入关键字"></Input>
               </FormItem>
               <Button type="primary" style='margin-left: 30px;'>查询</Button>
             </Form>
-
-        
       </div>  
       <div>
-        <Table border :columns="columns8" :data="squad" size="small" ref="table" height="500"></Table>
+        <Table border :columns="columns8" :data="statistics" size="small" ref="table" height="670"></Table>
      </div>
   </div>
 </template>
@@ -105,7 +96,6 @@ export default {
        }
       ],
       statistics:[],
-      squad:[]
       }
    
   },
@@ -117,19 +107,7 @@ export default {
     initDate(){
       getselectOnPro().then(res=>{
         if(res.data.code === 200){
-          console.log(res.data)
           this.statistics = res.data.data;
-          this.statistics.forEach(function(element) {
-            this.squad.push({
-               squad:element.squad,
-               squadId:element.squadId,
-               sum1:element.sum1,
-               sum2:element.sum2
-            })
-           
-           
-          }, this);
-         
         }
       })
     },
