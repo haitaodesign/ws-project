@@ -4,7 +4,7 @@
   <div class="home-push">
       <Row>
           <Col span="12">
-              <DatePicker type="date" placeholder="选择日期" style="width: 200px" @on-change='timerData'></DatePicker>
+              
           </Col>
       </Row>
       <RadioGroup v-model="button1" type="button" size='large' style='margin: 20px 0;'>
