@@ -276,14 +276,13 @@ export default {
     applyOk(name){
       this.$refs[name].validate((valid)=>{
         if(valid){
-          console.log(this.submitData);
           this.submitData.proName = this.applyData.proName;
           this.submitData.proType = this.applyData.proType;
           this.submitData.proDeclare = this.applyData.proDeclare;
           this.submitData.myDomain = JSON.stringify(this.applyData.myDomain);
           this.submitData.creatName = sessionStorage.getItem('userName');
           console.log(this.submitData);
-          this.applyloading=true;
+          // this.applyloading=true;
           submitApplyData(this.submitData).then(res=>{
             
             this.applyloading=false;

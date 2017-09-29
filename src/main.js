@@ -15,10 +15,27 @@ Vue.use(iView);
 Vue.config.productionTip = false
 
 router.beforeEach((to,from,next)=>{
-  
+  iView.LoadingBar.start();
+  // if(sessionStorage.getItem('token')){
+  //   if(to.path=="login"){
+  //     next('/')
+  //   }else{
+  //     next();
+  //   }
+  // }else{
+  //   if(to.path=="/login"){
+  //     next();
+  //   }else{
+  //     next('/login');
+  //   }
+  // }
   next();
 });
 
+
+router.afterEach((to,from)=>{
+  iView.LoadingBar.finish();
+});
 
 
 /* eslint-disable no-new */
@@ -26,20 +43,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  created(){
-    // this.checkLogin();
-    console.log(this.$axios ? 'Axios works!' :'no');
-  },
   template: '<App/>',
-  components: { App },
-  methods:{
-    checkLogin(){
-      console.log(Cookies.get('isLogin'));
-      if(Cookies.get('isLogin')){
-        // this.$router.push('/')
-      }else{
-        this.$router.push('/Login');
-      }
-    }
-  }
+  components: { App }
 })

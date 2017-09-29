@@ -1,7 +1,7 @@
 <template>
 <div class="header">
     <div class="header-logo">
-        <h1>VueAdmin</h1>
+        <span>项目管理系统</span>
     </div>
     <div class="header-right">
         <Dropdown @on-click="handleLogout()">
@@ -33,7 +33,6 @@ export default {
             this.$router.push('/Login');
         }
     }
-
 }
 </script>
 <style scoped>
@@ -52,7 +51,10 @@ export default {
     float: left;
     text-align: center;
     line-height: 66px;
+    color: rgba(255, 255, 255, .8);
+    font-size: 24px;
 }
+
 .header-right{
     display: block;
     float: right;
