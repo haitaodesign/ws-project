@@ -60,7 +60,7 @@
     
    
         <Table :columns="columns10" :data="selectFinPro"></Table>
-        <Page :total="100" show-sizer show-elevator class='Pages'></Page>
+        <Page :total="100" show-sizer show-elevator class='Pages' v-on:click='Onchange'></Page>
   
   </div>
 
@@ -140,6 +140,9 @@ export default {
           console.log(res.data.data)
         }
       })
+    },
+    Onchange(){
+      this.initData();
     }
   }
 }

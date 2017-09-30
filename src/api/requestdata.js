@@ -92,6 +92,17 @@ export function getselectFinPro(data){
         }
     })
 }
+//归档项目详情页
+export function getselectFinProInfo(data){
+    return fetch({
+        url:'/selectFinProInfo',
+        method:'post',
+        data:{
+            id:1,
+            proId:1
+        }
+    })
+}
 //查询回收列表
 export function getselectRecPro(data){
     return fetch({
@@ -110,7 +121,7 @@ export function getselectRecProInfo(data){
         method:'post',
         data:{
             id:1,
-            proId:2
+            proId:1
         }
     })
 }

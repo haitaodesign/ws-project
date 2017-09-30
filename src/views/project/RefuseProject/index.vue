@@ -1,7 +1,7 @@
 <template>
   <div class='clearfix'>
      <PageTitle :BreadData="breadData"></PageTitle>
-      <Form inline :label-width="90">
+      <Form inline :label-width="90" :model='parms'>
           <FormItem label="项目发起部门">
                 <Select v-model="selectpt" placeholder="请选择" style="width:200px;">
                     <Option value="beijing">北京市</Option>
@@ -41,11 +41,11 @@
           <FormItem label="上线时间">
               <Row>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime5"></DatePicker>
                   </Col>
                   <Col span="2" style="text-align: center">-</Col>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime6"></DatePicker>
                   </Col>
               </Row>
           </FormItem>
@@ -56,7 +56,7 @@
 
       </Form> 
       <Table :columns="columns10" :data="selectFinPro"></Table>
-      <Page :total="pages" show-sizer show-elevator class='Pages' v-on:click='Onchange()'></Page>
+      <Page :total="100" show-sizer show-elevator class='Pages' v-on:click='Onchange'></Page>
   </div>
 </template>
 <script>
@@ -78,6 +78,8 @@ export default {
       dateTime2:'',
       dateTime3:'',
       dateTime4:'',
+      dateTime5:'',
+      dateTime6:'',
       selectman:'',
       selectpt:'',
       columns10:[
@@ -121,7 +123,22 @@ export default {
         }
       ],
       selectFinPro:[],
-      pages:this.pages
+      pages:30,
+      parms:{
+        current:1,
+        pagesize:30,
+        pages:0,
+        total:0,
+        creatersquadid:'',
+        creater:'',
+        createdate1:'',
+        createdate2:'',
+        plansdate1:'',
+        plansdate2:'',
+        protype:'',
+        param:''
+      },
+      model:[]
     }
   },
   created(){
@@ -139,7 +156,7 @@ export default {
           })
       },
       Onchange(){
-          initData();
+          this.initData();
       }
   }
 }
