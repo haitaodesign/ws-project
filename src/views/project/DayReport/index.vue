@@ -29,7 +29,7 @@ export default {
           type: 'expand',
           width: 50,
           render: (h,obj) =>{
-           const pro = this.proReports[obj.index].proLogs[obj.index].Emp
+           const pro = this.proReports[obj.index].proLogs
             console.log(obj.row)
             console.log(pro)
             return h(proLogs, {
@@ -58,7 +58,19 @@ export default {
         },
        
       ],
-      columns2:[ 
+      columns2:[
+        {
+          type:"expand",
+          width: 50,
+          render:(h,obj) =>{
+            const TaskReport = this.selectTaskReport[obj.index].proLogs
+            return h(proLogs,{
+              props:{
+                row:obj.row
+              }
+            })
+          }
+        }, 
         {
           title: '名称',
           key: 'taskName'
@@ -80,7 +92,19 @@ export default {
           key: 'taskLogs'
         }
       ],
-      columns3:[ 
+      columns3:[
+        {
+          type:'expand',
+          width:50,
+          render:(h,obj) =>{
+            const SubtaskRepor = this.selectSubtaskRepor[obj.index].proLogs
+            return h(proLogs,{
+              props:{
+                row: obj.row
+              }
+            })
+          }
+        }, 
         {
           title: '名称',
           key: 'subtaskName'

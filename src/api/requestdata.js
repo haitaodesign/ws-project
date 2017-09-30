@@ -92,3 +92,25 @@ export function getselectFinPro(data){
         }
     })
 }
+//查询回收列表
+export function getselectRecPro(data){
+    return fetch({
+        url:'/selectRecPro',
+        method:'post',
+        data:{
+            current:1,
+            pageSize:5
+        }
+    })
+}
+//驳回详情页
+export function getselectRecProInfo(data){
+    return fetch({
+        url:'/selectRecProInfo',
+        method:'post',
+        data:{
+            id:1,
+            proId:2
+        }
+    })
+}

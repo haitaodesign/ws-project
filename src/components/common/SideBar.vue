@@ -17,10 +17,10 @@
             <MenuItem name="归档项目">
                 归档项目
             </MenuItem>
-            <MenuItem name="驳回项目">
-                驳回项目
+            <MenuItem name="项目回收站">
+                项目回收站
             </MenuItem>
-             <MenuItem name="项目统计">
+           <MenuItem name="项目统计">
                 项目统计
             </MenuItem>
              <MenuItem name="日报">

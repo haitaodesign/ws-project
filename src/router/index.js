@@ -18,7 +18,8 @@ import FileProject from '@/views/project/FileProject/index';                    
 import RefuseProject from '@/views/project/RefuseProject/index';                                  // 驳回项目
 import RefuseProjectDetails from '@/views/project/RefuseProject/Details';                                // 驳回详情页 
 import CountProject from '@/views/project/CountProject/index';                                    // 项目统计
-import DayReport from '@/views/project/DayReport/index';                                          // 日报
+import DayReport from '@/views/project/DayReport/index'; 
+import FileProjectDetails from '@/views/project/FileProject/Details'                                         // 日报
 
 Vue.use(Router);
 
@@ -69,11 +70,14 @@ const constantRouteMap=[
         name:'归档项目',
         component:FileProject
       },{
+        path:'/fileproject/:id',
+        name:'归档项目详情页',
+        component:FileProjectDetails
+      },{
         path:'/collectionproject',
-        name:'驳回项目',
+        name:'项目回收站',
         component:RefuseProject
-      },
-      {
+      },{
         path:'/collectionproject/:id',
         name:'驳回详情页',
         component:RefuseProjectDetails
