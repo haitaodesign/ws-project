@@ -98,9 +98,12 @@ export default {
           render:(h,obj)=>{
             const proname = this. selectFinPro[obj.index].proname
             const prodeclare = this.selectFinPro[obj.index].prodeclare
+            const id = this.selectFinPro[obj.index].id
             console.log(prodeclare)
             return h('div',[
-              h('div',proname),
+              h('roter-link',{
+               
+              },proname),
               h('div', prodeclare)
               ])
             // console.log(proname)
