@@ -11,6 +11,8 @@
 <script>
 import PageTitle from '../../components/PageTitle'
 import proLogs from './proLogs'
+import taskLogs from './taskLogs'
+import subtaskLogs from './subtaskLogs'
 import {getselectTaskReport} from '../../../api/requestdata.js'
 import {getproReports} from '../../../api/requestdata'
 import {getselectSubtaskReport} from '../../../api/requestdata'
@@ -31,8 +33,8 @@ export default {
           render: (h,obj) =>{
            const pro = this.proReports[obj.index].proLogs
             console.log(obj.row)
-            console.log(pro)
-            return h(proLogs, {
+            // console.log(pro)
+           return h(proLogs, {
               props: {
                 row: obj.row
               }
@@ -63,8 +65,12 @@ export default {
           type:"expand",
           width: 50,
           render:(h,obj) =>{
-            const TaskReport = this.selectTaskReport[obj.index].proLogs
-            return h(proLogs,{
+            const TaskReport = this.selectTaskReport[obj.index].taskLogs
+            console.log(obj.row)
+           
+            // console.log(TaskReport);
+            return h(taskLogs,{
+              
               props:{
                 row:obj.row
               }
@@ -86,10 +92,6 @@ export default {
         {
           title: '进度',
           key: 'taskProgress'
-        },
-        {
-          title: '动态',
-          key: 'taskLogs'
         }
       ],
       columns3:[
@@ -97,8 +99,9 @@ export default {
           type:'expand',
           width:50,
           render:(h,obj) =>{
-            const SubtaskRepor = this.selectSubtaskRepor[obj.index].proLogs
-            return h(proLogs,{
+            const SubtaskRepor = this.selectSubtaskRepor[obj.index].subtaskLogs
+            console.log(obj.row)
+            return h(subtaskLogs,{
               props:{
                 row: obj.row
               }
@@ -120,10 +123,6 @@ export default {
         {
           title: '进度',
           key: 'subtaskProgress'
-        },
-        {
-          title: '动态',
-          key: 'subtaskLogs'
         }
       ],
       proReports:[],

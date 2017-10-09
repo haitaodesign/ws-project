@@ -3,14 +3,21 @@
      <PageTitle :BreadData="breadData"></PageTitle>
       <Form inline :label-width="90" :model='parms'>
           <FormItem label="项目发起部门">
-                <Select v-model="selectpt" placeholder="请选择" style="width:200px;">
+                <Select v-model="parms.creatersquadid" placeholder="请选择" style="width:200px;">
                     <Option value="beijing">北京市</Option>
                     <Option value="shanghai">上海市</Option>
                     <Option value="shenzhen">深圳市</Option>
                 </Select>
             </FormItem>
             <FormItem label="项目发起人">
-                <Select v-model="selectman" placeholder="请选择"  style="width:200px">
+                <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
+                    <Option value="beijing">北京市</Option>
+                    <Option value="shanghai">上海市</Option>
+                    <Option value="shenzhen">深圳市</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="项目状态">
+                <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
                     <Option value="beijing">北京市</Option>
                     <Option value="shanghai">上海市</Option>
                     <Option value="shenzhen">深圳市</Option>
@@ -19,38 +26,27 @@
             <FormItem label="项目发起时间">
               <Row>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createdate1"></DatePicker>
                   </Col>
                   <Col span="2" style="text-align: center">-</Col>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime2"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createdate2"></DatePicker>
                   </Col>
               </Row>
           </FormItem>
-          <FormItem label="项目完成时间">
+          <FormItem label="预计完成时间">
               <Row>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime3"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.plansdate1"></DatePicker>
                   </Col>
                   <Col span="2" style="text-align: center">-</Col>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime4"></DatePicker>
-                  </Col>
-              </Row>
-          </FormItem>
-          <FormItem label="上线时间">
-              <Row>
-                  <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime5"></DatePicker>
-                  </Col>
-                  <Col span="2" style="text-align: center">-</Col>
-                  <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="dateTime6"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.plansdate2"></DatePicker>
                   </Col>
               </Row>
           </FormItem>
           <FormItem label="">
-              <Input v-model="keys" placeholder="请输入关键字"></Input>
+              <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
           <Button type="primary" style='margin-left: 30px;'>查询</Button>
 

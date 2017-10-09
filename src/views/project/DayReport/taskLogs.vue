@@ -5,7 +5,7 @@
             <Col> 
                 <span class="expand-key">动态:</span>
             </Col> 
-            <Col span="24" v-for='item in row.proLogs' :key='item.index'>
+            <Col span="24" v-for='item in row.taskLogs' :key='item.index'>
                 <span class="expand-value">{{ item.Emp }}</span>
                 <span class="expand-value">{{ item.type }}</span>
             </Col>

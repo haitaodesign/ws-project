@@ -125,3 +125,14 @@ export function getselectRecProInfo(data){
         }
     })
 }
+//立项待审批发起部门
+export function getUpProjectList(data){
+    return fetch({
+        url:'/getUpProjectList',
+        method:'post',
+        data:{
+          current:1,
+          pageSize:5  
+        }
+    })
+}
