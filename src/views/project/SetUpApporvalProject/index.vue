@@ -80,9 +80,14 @@ export default {
           render:(h,obj)=>{
             const proname = this.ProjectList[obj.index].proname
             const prodeclare = this.ProjectList[obj.index].prodeclare
-            console.log(prodeclare)
+            const id = this.ProjectList[obj.index].id;
+            console.log(id);
             return h('div',[
-              h('div',proname),
+              h('router-link',{
+                props:{
+                  to:'setupapprvalproject/'+id
+                }
+              },proname),
               h('div', prodeclare)
               ])
             // console.log(proname)
