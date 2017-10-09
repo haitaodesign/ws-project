@@ -50,7 +50,7 @@ export default {
                         login(this.loginForm).then(res=>{
                             this.isLoading=false;
                             let username = res.data.data.userName;
-                            sessionStorage.setItem('userName',username);
+                            sessionStorage.setItem('userName','李海涛');
                             this.$router.push('/');
                         }).catch(err=>{
                             this.$Message.error('系统异常，请重试！');
