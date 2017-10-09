@@ -112,7 +112,12 @@ export default {
       RecProInfo:[],
       log:[],
       baseInfo:[
-      ]
+      ],
+      watch:{
+        '$route' (to, from) {
+          console.log(from);
+        }
+      }
     }
   },
   created(){
