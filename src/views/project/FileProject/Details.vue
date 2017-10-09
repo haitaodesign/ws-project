@@ -50,7 +50,8 @@
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
-import {getselectRecPro} from '../../../api/requestdata'
+
+
 export default {
   components:{
     PageTitle
@@ -72,12 +73,7 @@ export default {
   },
   methods:{
     initData(){
-      getselectRecPro().then(res=>{
-        console.log(res.data)
-        if(res.data.code === 200){
-          console.log(res.data)
-        }
-      })
+    
     }
   }
 }
