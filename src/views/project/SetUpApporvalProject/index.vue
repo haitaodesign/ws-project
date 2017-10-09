@@ -16,13 +16,7 @@
                     <Option value="shenzhen">深圳市</Option>
                 </Select>
             </FormItem>
-            <FormItem label="项目状态">
-                <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
-                </Select>
-            </FormItem>
+        
             <FormItem label="项目发起时间">
               <Row>
                   <Col span="11">
@@ -45,19 +39,27 @@
                   </Col>
               </Row>
           </FormItem>
+           <FormItem label="项目类型">
+                <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
+                    <Option value="beijing">北京市</Option>
+                    <Option value="shanghai">上海市</Option>
+                    <Option value="shenzhen">深圳市</Option>
+                </Select>
+            </FormItem>
           <FormItem label="">
               <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
           <Button type="primary" style='margin-left: 30px;'>查询</Button>
 
       </Form> 
-      <Table :columns="columns10" :data="data1"></Table>
-      <Page :total="100" show-sizer show-elevator class='Pages'></Page>
+      <Table :columns="columns10" :data="ProjectList"></Table>
+      <Page :total="parms.pagesize" show-sizer show-elevator class='Pages'></Page>
   </div>
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
 import {getUpProjectList} from '../../../api/requestdata'
+
 export default {
   components:{
     PageTitle
@@ -76,8 +78,8 @@ export default {
           title:'项目名称',
           key:'proname',
           render:(h,obj)=>{
-            const proname = this. selectFinPro[obj.index].proname
-            const prodeclare = this.selectFinPro[obj.index].prodeclare
+            const proname = this.ProjectList[obj.index].proname
+            const prodeclare = this.ProjectList[obj.index].prodeclare
             console.log(prodeclare)
             return h('div',[
               h('div',proname),
@@ -95,16 +97,55 @@ export default {
           key: 'createdate'
         },
         {
-          title: '完成时间',
+          title: '预计完成时间',
           key: 'planedate'
-        },
-        {
-          title: '上线时间',
-          key: 'onlineDate'
         },
         {
           title: '创建人',
           key: 'creater'
+        },
+        {
+          title: '操作',
+          key: 'action',
+          width: 150,
+          align: 'center',
+          render:(h,obj)=>{
+            return h('div',[
+              h('Button',{
+                props:{
+                  type: 'primary',
+                  size: 'small'
+                },
+                style:{
+                  marginRight: '5px'
+                },
+                on:{
+                  click:()=>{
+                        getUpProjectList().then(res=>{
+                          if(res.data.code === 200){
+                            console.log(res.data)
+                            // this.ProjectList = res.data.data;
+                            // console.log(this.ProjectList)
+                          }
+                        })
+                    // this.show(obj.index)
+                  }
+                }
+                 
+              },'通过'),
+              h('Button',{
+                props:{
+                  type: 'error',
+                  size: 'small'
+                },
+                on:{
+                  click:()=>{
+                    // this.remove(obj.index)
+                  }
+                }
+              },'驳回')
+            ])
+          }
         }
       ],
       parms:{
@@ -119,7 +160,8 @@ export default {
         plansdate1:'',
         plansdate2:'',
         protype:'',
-        param:''
+        param:'',
+        
       },
       data1:[],
       ProjectList:[]
@@ -130,10 +172,11 @@ export default {
   },
   methods:{
     initData(){
-      getUpProjectList().then(res=>{
+     getUpProjectList().then(res=>{
          if(res.data.code === 200){
            console.log(res.data)
-          this.ProjectList = res.data;
+          this.ProjectList = res.data.data;
+          // console.log(this.ProjectList)
          }
       })
     }

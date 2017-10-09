@@ -51,6 +51,7 @@
 <script>
 import PageTitle from '../../components/PageTitle'
 import {getselectRecProInfo} from '../../../api/requestdata'
+
 export default {
   components:{
     PageTitle
@@ -67,11 +68,11 @@ export default {
         },
         {
           title: '时间',
-          key: 'squadid'
+          key: 'date'
         },
         {
           title: '操作部门/人',
-          key: 'taskname'
+          key: 'squadid'
         },
         {
           title: '说明',
@@ -89,7 +90,7 @@ export default {
         },
         {
           title: '组名称',
-          key: 'squadid'
+          key: 'squadId'
         },
         {
           title: '任务名称',
@@ -122,7 +123,8 @@ export default {
       getselectRecProInfo().then(res=>{
         if(res.data.code === 200){
           this.RecProInfo = res.data.data[0].ProTask;
-          this.baseInfo = res.data.data[0].ProInfo
+          this.baseInfo = res.data.data[0].ProInfo;
+          this.log = res.data.data[0].ProLogRecord
           console.log(res.data)
         }
       })

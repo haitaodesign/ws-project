@@ -17,7 +17,7 @@
                 </Select>
             </FormItem>
             <FormItem label="项目状态">
-                <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
+                <Select v-model="parms.prostate" placeholder="请选择"  style="width:200px">
                     <Option value="beijing">北京市</Option>
                     <Option value="shanghai">上海市</Option>
                     <Option value="shenzhen">深圳市</Option>
@@ -45,6 +45,13 @@
                   </Col>
               </Row>
           </FormItem>
+          <FormItem label="项目类型">
+                <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
+                    <Option value="beijing">北京市</Option>
+                    <Option value="shanghai">上海市</Option>
+                    <Option value="shenzhen">深圳市</Option>
+                </Select>
+            </FormItem>
           <FormItem label="">
               <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
@@ -68,16 +75,7 @@ export default {
       breadData:[{
         name:'项目回收站'
       }],
-      keys:'',
-      selectType:'',
-      dateTime:'',
-      dateTime2:'',
-      dateTime3:'',
-      dateTime4:'',
-      dateTime5:'',
-      dateTime6:'',
-      selectman:'',
-      selectpt:'',
+      
       columns10:[
         {
           title:'项目编号',
@@ -132,7 +130,8 @@ export default {
         plansdate1:'',
         plansdate2:'',
         protype:'',
-        param:''
+        param:'',
+        
       },
       model:[]
     }

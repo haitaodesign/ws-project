@@ -14,6 +14,9 @@
             <MenuItem name="我的项目">
                 我的项目
             </MenuItem>
+            <MenuItem name="上线待审批">
+                上线待审批
+            </MenuItem>
             <MenuItem name="归档项目">
                 归档项目
             </MenuItem>

@@ -4,7 +4,7 @@ import Qs from 'qs'
 
 
 const service = axios.create({  
-    baseURL:'http://192.168.22.46:5826',
+    baseURL:'http://192.168.3.26:5826',
     timeout:5000,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

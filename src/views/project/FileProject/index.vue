@@ -3,69 +3,62 @@
   <div class='Object clearfix'>
      <PageTitle :BreadData="breadData"></PageTitle> 
      <div class="apply-baseinfo clearfix">
-         <Form inline :label-width="90">
-              <FormItem label="项目发起部门">
-                    <Select v-model="selectpt" placeholder="请选择" style="width:200px;">
-                        <Option value="beijing">北京市</Option>
-                        <Option value="shanghai">上海市</Option>
-                        <Option value="shenzhen">深圳市</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="项目发起人">
-                    <Select v-model="selectman" placeholder="请选择"  style="width:200px">
-                        <Option value="beijing">北京市</Option>
-                        <Option value="shanghai">上海市</Option>
-                        <Option value="shenzhen">深圳市</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="项目发起时间">
-                  <Row>
-                      <Col span="11">
-                          <DatePicker type="date" placeholder="选择日期" v-model="dateTime"></DatePicker>
-                      </Col>
-                      <Col span="2" style="text-align: center">-</Col>
-                      <Col span="11">
-                          <DatePicker type="date" placeholder="选择日期" v-model="dateTime2"></DatePicker>
-                      </Col>
-                  </Row>
-              </FormItem>
-              <FormItem label="项目完成时间">
-                  <Row>
-                      <Col span="11">
-                          <DatePicker type="date" placeholder="选择日期" v-model="dateTime3"></DatePicker>
-                      </Col>
-                      <Col span="2" style="text-align: center">-</Col>
-                      <Col span="11">
-                          <DatePicker type="date" placeholder="选择日期" v-model="dateTime4"></DatePicker>
-                      </Col>
-                  </Row>
-              </FormItem>
-              <FormItem label="上线时间">
-                  <Row>
-                      <Col span="11">
-                          <DatePicker type="date" placeholder="选择日期" v-model="dateTime"></DatePicker>
-                      </Col>
-                      <Col span="2" style="text-align: center">-</Col>
-                      <Col span="11">
-                          <DatePicker type="date" placeholder="选择日期" v-model="dateTime"></DatePicker>
-                      </Col>
-                  </Row>
-              </FormItem>
-              <FormItem label="">
-                  <Input v-model="keys" placeholder="请输入关键字"></Input>
-              </FormItem>
-              <Button type="primary" style='margin-left: 30px;'>查询</Button>
-         </Form>
+               <Form inline :label-width="90" :model='parms'>
+          <FormItem label="项目发起部门">
+                <Select v-model="parms.creatersquadid" placeholder="请选择" style="width:200px;">
+                    <Option value="beijing">3</Option>
+                    <Option value="shanghai">1</Option>
+                    <Option value="shenzhen">2</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="项目发起人">
+                <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
+                    <Option value="beijing">北京市</Option>
+                    <Option value="shanghai">上海市</Option>
+                    <Option value="shenzhen">深圳市</Option>
+                </Select>
+            </FormItem>
+      
+            <FormItem label="项目发起时间">
+              <Row>
+                  <Col span="11">
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createdate1"></DatePicker>
+                  </Col>
+                  <Col span="2" style="text-align: center">-</Col>
+                  <Col span="11">
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createdate2"></DatePicker>
+                  </Col>
+              </Row>
+          </FormItem>
+          <FormItem label="预计完成时间">
+              <Row>
+                  <Col span="11">
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.plansdate1"></DatePicker>
+                  </Col>
+                  <Col span="2" style="text-align: center">-</Col>
+                  <Col span="11">
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.plansdate2"></DatePicker>
+                  </Col>
+              </Row>
+          </FormItem>
+          <FormItem label="项目类型">
+                <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
+                    <Option value="beijing">北京市</Option>
+                    <Option value="shanghai">上海市</Option>
+                    <Option value="shenzhen">深圳市</Option>
+                </Select>
+            </FormItem>
+          <FormItem label="">
+              <Input v-model="parms.param" placeholder="请输入关键字"></Input>
+          </FormItem>
+          <Button type="primary" style='margin-left: 30px;'>查询</Button>
+
+      </Form> 
     </div> 
-    
-   
         <Table :columns="columns10" :data="selectFinPro"></Table>
         <Page :total="100" show-sizer show-elevator class='Pages' v-on:click='Onchange'></Page>
-  
-  </div>
-
+   </div>
 </template>
-
 <script>
 import PageTitle from '../../components/PageTitle'
 import {getselectFinPro} from '../../../api/requestdata'
@@ -78,14 +71,22 @@ export default {
       breadData:[{
         name:'归档项目'
       }],
-      keys:'',
-      selectType:'',
-      dateTime:'',
-      dateTime2:'',
-      dateTime3:'',
-      dateTime4:'',
-      selectman:'',
-      selectpt:'',
+    
+      parms:{
+        current:1,
+        pagesize:30,
+        pages:0,
+        total:0,
+        creatersquadid:'',
+        creater:'',
+        createdate1:'',
+        createdate2:'',
+        plansdate1:'',
+        plansdate2:'',
+        protype:'',
+        param:'',
+        
+      },
       columns10:[
         {
           title:'项目编号',

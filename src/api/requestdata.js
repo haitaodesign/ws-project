@@ -125,7 +125,7 @@ export function getselectRecProInfo(data){
         }
     })
 }
-//立项待审批发起部门
+//立项待审批
 export function getUpProjectList(data){
     return fetch({
         url:'/getUpProjectList',
@@ -133,6 +133,48 @@ export function getUpProjectList(data){
         data:{
           current:1,
           pageSize:5  
+        }
+    })
+}
+//立项待审批详情页
+export function getUpDetails(data){
+    return fetch({
+        url:'/getUpDetails',
+        method:'post',
+        data:{
+            id:1,
+            prold:1
+        }
+    })
+}
+//上线待审批
+export function getOnlinePro(data){
+    return fetch({
+        url:'/selectOnPro',
+        method:"post",
+        data:{
+            current:1,
+            pageSize:5
+        }
+    })
+}
+//审批通过
+export function getselectInsertProPassLog(data){
+    return fetch({
+        url:'/selectInsertProPassLog',
+        method:'post',
+        data:{
+            proId:1
+        }
+    })
+}
+//审批驳回
+export function getselectInsertProReturnLog(data){
+    return fetch({
+        url:'/selectInsertProReturnLog',
+        method:'post',
+        data:{
+            proId:1
         }
     })
 }
