@@ -13,7 +13,7 @@
             <FormItem label="项目发起时间">
               <Row>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="params.createDateStart"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期"  v-model="params.createDateStart"></DatePicker>
                   </Col>
                   <Col span="2" style="text-align: center">-</Col>
                   <Col span="11">
@@ -79,14 +79,25 @@ export default {
           const row = params.row;
           const proname = row.proname;
           const prodeclare = row.prodeclare;
-          const id = row.id;
+          const routeparams ={
+            name:'开发中详情页',
+            params:{
+              id:row.id
+            },
+            query:{
+              proId:row.proid
+            }
+          }
           return h('div',[
-            h('router-link',{
+            h('h3',{
               style:{
-                color:'#2d8cf0'
+                color:'#2d8cf0',
+                cursor:'pointer'
               },
-              props:{
-                to:'myproject/'+id
+              on:{
+                click:()=>{
+                  this.$router.push(routeparams);
+                }
               }
             },proname),
             h('div',prodeclare)
@@ -237,6 +248,9 @@ export default {
     pagesizeChange(value){
       this.params.pageSize = value;
       this.initListData();
+    },
+    onChange(date){
+      console.log(date);
     }
   }
 }

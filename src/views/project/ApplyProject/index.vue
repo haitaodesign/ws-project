@@ -46,7 +46,7 @@
             <Cascader :data="deptData" :load-data="loadGroupData" @on-change="deptChange" v-model="partInData.SquadName"></Cascader>
           </FormItem>
            <FormItem prop="Sdate" label="开始时间：">
-                <DatePicker type="datetime" :options="dateOptions" v-model="partInData.Sdate" @on-change="sdateChange" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择上线时间"></DatePicker>
+            <DatePicker type="datetime" :options="dateOptions" v-model="partInData.Sdate" @on-change="sdateChange" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择上线时间"></DatePicker>
           </FormItem>
           <FormItem prop="Edate" label="结束时间：">
               <DatePicker type="datetime" :options="dateOptions" v-model="partInData.Edate" @on-change="edateChange" format="yyyy-MM-dd HH:mm:ss" placeholder="请选择下线时间"></DatePicker>
