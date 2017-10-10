@@ -3,11 +3,7 @@
      <PageTitle :BreadData="breadData"></PageTitle>
       <Form inline :label-width="90" :model='parms'>
           <FormItem label="项目发起部门">
-                <Select v-model="parms.creatersquadid" placeholder="请选择" style="width:200px;">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
-                </Select>
+               <Cascader :data="deptData" :load-data="loadGroupData" @on-change="deptChange"></Cascader>
             </FormItem>
             <FormItem label="项目发起人">
                 <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
@@ -45,11 +41,14 @@
                   </Col>
               </Row>
           </FormItem>
-          <FormItem label="项目类型">
-                <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+           <FormItem label="项目类型">
+                <Select placeholder="请选择"  style="width:200px" v-model="parms.protype">
+                    <Option value="1">立项待审批</Option>
+                    <Option value="2">开发中</Option>
+                    <Option value="3">上线待审批</Option>
+                    <Option value="4">完成</Option>
+                    <Option value="5">驳回</Option>
+                    <Option value="6">作废</Option>
                 </Select>
             </FormItem>
           <FormItem label="">
@@ -65,6 +64,9 @@
 <script>
 import PageTitle from '../../components/PageTitle'
 import {getselectRecPro} from '../../../api/requestdata'
+import { getMembersBySquadId } from '../../../api/myproject';
+import {getDeptData} from '../../../api/requestdata';
+import {getGroupData} from '../../../api/requestdata';
 
 export default {
   components:{
@@ -102,7 +104,35 @@ export default {
         },
         {
           title: '项目状态',
-          key: 'prostate'
+          key: 'prostate',
+          render:(h,params)=>{
+          const row = params.row;
+          const status = row.prostate;
+          let text =''
+          switch(status){
+            case '1':
+            text = '立项待审批';
+            break;
+             case '2':
+            text = '开发中';
+            break;
+             case '3':
+            text = '上线待审批';
+            break;
+             case '4':
+            text = '完成';
+            break;
+             case '5':
+            text = '驳回';
+            break;
+             case '6':
+            text = '作废';
+            break;
+            default:
+            text = '状态数据异常';
+          }
+          return h('div',text);
+        }
         },
         {
           title: '创建时间',
@@ -138,11 +168,13 @@ export default {
         param:'',
         
       },
-      model:[]
+      model:[],
+      deptData:[]
     }
   },
   created(){
       this.initData();
+      this.initDeptData();
   },
   methods:{
       initData(){
@@ -155,6 +187,62 @@ export default {
               }
           })
       },
+          // 发起部门数据
+    initDeptData(){
+      getDeptData(this.parms).then(res=>{
+        let depdata=res.data.data;
+        depdata.forEach(function(element) {
+          this.deptData.push({
+            value:element.departmentid,
+            label:element.department,
+            children: [],
+            loading: false
+          });
+        },this);
+      })
+    },
+    // 组数据
+    initGroupData(parms,item){
+      getGroupData(parms).then(res=>{
+        let groupdata=res.data.data;
+        groupdata.forEach(function(element) {
+          item.children.push({
+            value:element.squadid,
+            label:element.squad
+          })
+        }, this);
+        item.loading=false;
+      })
+    },
+    // Cascader加载组数据
+    loadGroupData(item,callback){
+      item.loading=true;
+      let deptId=item.value;
+      let parms = {
+        id:item.value
+      };
+      this.initGroupData(parms,item);
+      callback();
+    },
+    // 监听Cascader组件数据
+    deptChange(value,selectedData){
+      // 通过小组id获取人
+      this.parms.createrSquadId = selectedData[1].value;
+      this.initCreaterData();
+    },
+    // 初始化项目发起人数据
+    initCreaterData(){
+      const parms = {
+        squadId:this.parms.createrSquadId
+      }
+      getMembersBySquadId(parms).then(res=>{
+          this.createrData = res.data.data; 
+      })
+    },
+    // 点击查询请求数据
+    searchForm(){
+      this.initData();
+    },
       Onchange(){
           this.initData();
       }
