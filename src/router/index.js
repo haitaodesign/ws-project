@@ -102,5 +102,6 @@ const constantRouteMap=[
 
 
 export default new Router({
-  routes: constantRouteMap
+  routes: constantRouteMap,
+  mode:'history'
 })

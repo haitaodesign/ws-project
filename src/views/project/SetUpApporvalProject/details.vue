@@ -111,11 +111,11 @@ export default {
       ],
       RecProInfo:[],
       log:[],
-      baseInfo:[
-      ]
+      baseInfo:[]
     }
   },
   created(){
+    console.log(this.$route);
     this.initData()
   },
   methods:{
@@ -129,6 +129,9 @@ export default {
           
         }
       })
+    },
+    geturl(){
+      console.log(this.$route);
     }
   }
 }

@@ -116,7 +116,8 @@ export default {
     }
   },
   created(){
-    this.initData()
+    console.log(this.$route.params);
+    this.initData();
   },
   methods:{
     initData(){
