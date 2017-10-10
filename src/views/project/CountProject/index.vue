@@ -72,7 +72,7 @@ import PageTitle from '../../components/PageTitle'
 import {getselectOnPro} from '../../../api/requestdata'
 import {getDeptData} from '../../../api/requestdata';
 import {getGroupData} from '../../../api/requestdata';
-import {getMembersBySquadId} from '../../../api/requestdata'
+import {getMembersBySquadId} from '../../../api/myproject'
 export default {
   components:{
     PageTitle,
