@@ -21,7 +21,6 @@ service.interceptors.request.use(config=>{
      
     // config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;application/json';
     config.data=Qs.stringify(config.data);
-    console.log(Qs.stringify(config.data))
     return config;
 },error=>{
     console.log(error);
