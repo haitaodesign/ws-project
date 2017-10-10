@@ -20,7 +20,7 @@ import RefuseProjectDetails from '@/views/project/RefuseProject/Details';       
 import CountProject from '@/views/project/CountProject/index';                                    // 项目统计
 import DayReport from '@/views/project/DayReport/index'; 
 import FileProjectDetails from '@/views/project/FileProject/Details'                                         // 日报
-
+import onlineapprovalprojectDetails from '@/views/project/OnlineApporvalProject/Details'
 Vue.use(Router);
 
 
@@ -65,6 +65,10 @@ const constantRouteMap=[
         path:'/onlineapprovalproject',
         name:'上线待审批',
         component:OnlineApporvalProject
+      },{
+        path:'/onlineapprovalproject/id',
+        name:'上线待审批详情页',
+        component:onlineapprovalprojectDetails
       },{
         path:'/fileproject',
         name:'归档项目',
