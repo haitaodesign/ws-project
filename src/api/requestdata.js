@@ -143,7 +143,7 @@ export function getUpDetails(data){
         method:'post',
         data:{
             id:1,
-            prold:1
+            proId:1
         }
     })
 }

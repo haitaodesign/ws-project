@@ -35,7 +35,7 @@
         <Col span='12'>
             <Tabs class="home-push">
                 <TabPane label="日志记录" name="0" style="padding:10px;">
-                 <Table border :columns="columns1" :data="log"></Table>
+                 <Table border :columns="columns1" :data="log" height="230" ></Table>
                 </TabPane>
             </Tabs>
         </Col>
@@ -76,11 +76,11 @@ export default {
         },
         {
           title: '说明',
-          key: 'sdate'
+          key: 'explain'
         },
         {
           title: '附件',
-          key: 'edate'
+          key: 'filepath'
         },
        ],
       columns2:[
@@ -123,9 +123,9 @@ export default {
       getUpDetails().then(res=>{
         console.log(res.data)
         if(res.data.code === 200){
-          // this.RecProInfo = res.data.data[0].ProTask;
-          // this.baseInfo = res.data.data[0].ProInfo;
-          // this.log = res.data.data[0].ProLogRecord
+          this.RecProInfo = res.data.data[0].taskList;
+          this.baseInfo = res.data.data[0].projectInfo;
+          this.log = res.data.data[0].logRecordList
           
         }
       })
