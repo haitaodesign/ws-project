@@ -33,13 +33,13 @@
               </Row>
           </FormItem>
           <FormItem label="项目类型">
-                <Select placeholder="请选择"  style="width:200px" v-model="params.proState">
+                <Select placeholder="请选择"  style="width:200px" v-model="params.proType">
                     <Option value="1">产品</Option>
                     <Option value="2">活动</Option>
                 </Select>
             </FormItem>
            <FormItem label="项目状态">
-                <Select placeholder="请选择"  style="width:200px" v-model="params.proType">
+                <Select placeholder="请选择"  style="width:200px" v-model="params.proState">
                     <Option value="1">立项待审批</Option>
                     <Option value="2">开发中</Option>
                     <Option value="3">上线待审批</Option>
