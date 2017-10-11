@@ -415,7 +415,7 @@ export default {
       })
     },
     onclick(){
-      
+      this.addshow = true;
     },
     initCreaterData(){
       const params = {

@@ -2,6 +2,10 @@
 <template>
   <div>
       <PageTitle :BreadData="breadData"></PageTitle>
+      <Row>
+        <Col span="4" offset="8"><Button type="primary" @click='ok'>通过</Button></Col>
+        <Col span="4"><Button type="primary" @click="upDown">驳回</Button></Col>
+      </Row>
       <Row :gutter='32'>
         <Col span='12'>
             <Tabs class="home-push">
@@ -46,8 +50,38 @@
                 </TabPane>
             </Tabs>
       </Col>
-    </Row>     
+    </Row>
+      <Modal
+        v-model="isUpDown" width="360" :styles="{top: '200px'}">
+        
+        <p slot="header" style="color:#f60;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <span>是否确认驳回</span>
+        </p>
+        <div style='text-align: center' class='btn'>
+            <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='sure(baseInfo)'>确定</Button>
+           <Button type="error" style='width: 80px;' v-on:click='del(baseInfo)'>取消</Button>
+        </div>
+        <div slot="footer">
+          
+        </div>
+    </Modal> 
+    <modal
+        v-model="isOk" width="360" :styles="{top: '200px'}">
+        <p slot="header" style="color:#666;text-align:center">
+           <span>是否确认通过</span>
+        </p>
+        <div style='text-align: center' class='btn'>
+           <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='sure(baseInfo)'>确定</Button>
+           <Button type="error" style='width: 80px;' v-on:click='del(baseInfo)'>取消</Button>
+        </div>
+        <div slot="footer">
+          
+        </div>
+    </modal>    
+  
   </div>
+
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
@@ -58,6 +92,8 @@ export default {
   },
   data(){
     return{
+      isUpDown: false,
+      isOk: false,
       breadData:[{
         name:'项目驳回详情页'
       }],
@@ -72,7 +108,7 @@ export default {
         },
         {
           title: '操作部门/人',
-          key: 'squadid'
+          key: 'emp'
         },
         {
           title: '说明',
@@ -111,7 +147,11 @@ export default {
       ],
       RecProInfo:[],
       log:[],
-      baseInfo:[]
+      baseInfo:{
+        proid:'',
+        prodeclare:''
+      },
+     
     }
   },
   created(){
@@ -132,8 +172,35 @@ export default {
     },
     geturl(){
       console.log(this.$route);
-    }
-  }
+    },
+    upDown(){
+      this.isUpDown = true;
+       
+    },
+    ok(){
+      this.isOk = true;
+    },
+    sure(name){
+       getUpDetails(this.baseInfo).then(res=>{
+        console.log(res.data)
+        if(res.data.code === 200){
+          window.location.href = '/setupapprvalproject'
+          
+        }
+      })
+    },
+    del(name){
+         getUpDetails(this.baseInfo).then(res=>{
+        console.log(res.data)
+        if(res.data.code === 200){
+          window.location.href = '/setupapprvalproject'
+          
+        }
+      })
+    },
+  
+  },
+  
 }
 </script>
 <style scoped>
@@ -141,4 +208,5 @@ export default {
 height: 30px;
 line-height: 30px;;
 }
+
 </style>

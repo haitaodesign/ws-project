@@ -7,9 +7,7 @@
             </FormItem>
             <FormItem label="项目发起人">
                 <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option v-for="item in createrData" :key="item.id" v-model:value="item.id">{{item.member}}</Option>
                 </Select>
             </FormItem>
             <FormItem label="项目状态">
@@ -84,14 +82,14 @@ export default {
           title:'项目名称',
           key:'proname',
           render:(h,obj)=>{
-            const proname = this.ProjectList[obj.index].proname
-            const prodeclare = this.ProjectList[obj.index].prodeclare
-            const id = this.ProjectList[obj.index].id;
+            const proname = this.selectFinPro[obj.index].proname
+            const prodeclare = this.selectFinPro[obj.index].prodeclare
+            const id = this.selectFinPro[obj.index].id;
             console.log(id);
             return h('div',[
               h('router-link',{
                 props:{
-                  to:'setupapprvalproject/'+id
+                  to:'collectionproject/'+id
                 }
               },proname),
               h('div', prodeclare)
@@ -155,7 +153,8 @@ export default {
         
       },
       model:[],
-      deptData:[]
+      deptData:[],
+      createrData:[]
     }
   },
   created(){

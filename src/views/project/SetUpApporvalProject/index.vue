@@ -7,9 +7,7 @@
             </FormItem>
             <FormItem label="项目发起人">
                 <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option v-for="item in createrData" :key="item.id" v-model:value="item.id">{{item.member}}</Option>
                 </Select>
             </FormItem>
         
@@ -35,7 +33,14 @@
                   </Col>
               </Row>
           </FormItem>
-    
+          <FormItem label="项目类型">
+                <Select placeholder="请选择"  style="width:200px" v-model="parms.protype">
+                    <Option value="1">产品</Option>
+                    <Option value="2">活动</Option>
+                    
+                </Select>
+            </FormItem>
+      
           <FormItem label="">
               <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
@@ -94,6 +99,8 @@ export default {
         let text =''
         if(status === '1'){
           text='立项待审批'
+        }else{
+          text='状态数据异常'
         }
     
           return h('div',text);
@@ -176,6 +183,7 @@ export default {
       total:null,
       ProjectList:[],
       deptData:[],
+      createrData:[],
       pagesizeoption:[10,20,30],
     }
   },
@@ -241,9 +249,12 @@ export default {
     initCreaterData(){
       const parms = {
         squadId:this.parms.createrSquadId
+        
       }
+      console.log(parms.squadId)
       getMembersBySquadId(parms).then(res=>{
           this.createrData = res.data.data; 
+          console.log(this.createrData)
       })
     },
     // 点击查询请求数据
@@ -259,6 +270,9 @@ export default {
     pagesizeChange(value){
       this.parms.pageSize = value;
       this.initData();
+    },
+    onclick(){
+      
     }
   }
 }

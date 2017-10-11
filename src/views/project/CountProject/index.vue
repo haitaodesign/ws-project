@@ -8,9 +8,7 @@
                 </FormItem>
                 <FormItem label="项目发起人">
                     <Select v-model="params.creater" placeholder="请选择"  style="width:200px">
-                        <Option value="beijing">北京市</Option>
-                        <Option value="shanghai">上海市</Option>
-                        <Option value="shenzhen">深圳市</Option>
+                        <Option v-for="item in createrData" :key="item.id" v-model:value="item.id">{{item.member}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="项目发起时间">
