@@ -14,9 +14,12 @@
             </FormItem>
             <FormItem label="项目状态">
                 <Select v-model="parms.prostate" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option value="1">立项待审批</Option>
+                    <Option value="2">开发中</Option>
+                    <Option value="3">上线待审批</Option>
+                    <Option value="4">完成</Option>
+                    <Option value="5">驳回</Option>
+                    <Option value="6">作废</Option>
                 </Select>
             </FormItem>
             <FormItem label="项目发起时间">
@@ -43,12 +46,9 @@
           </FormItem>
            <FormItem label="项目类型">
                 <Select placeholder="请选择"  style="width:200px" v-model="parms.protype">
-                    <Option value="1">立项待审批</Option>
-                    <Option value="2">开发中</Option>
-                    <Option value="3">上线待审批</Option>
-                    <Option value="4">完成</Option>
-                    <Option value="5">驳回</Option>
-                    <Option value="6">作废</Option>
+                    <Option value="1">产品</Option>
+                    <Option value="2">活动</Option>
+                    
                 </Select>
             </FormItem>
           <FormItem label="">
