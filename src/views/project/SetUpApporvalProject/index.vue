@@ -135,9 +135,11 @@ export default {
                 },
                 on:{
                   click:()=>{
-                        getUpProjectList().then(res=>{
+
+                        getUpProjectList(this.object).then(res=>{
                           if(res.data.code === 200){
                             console.log(res.data)
+                            this.$router.push('/collectionproject');
                             // this.ProjectList = res.data.data;
                             // console.log(this.ProjectList)
                           }
@@ -180,6 +182,7 @@ export default {
         
       },
       data1:[],
+      object:[],
       total:null,
       ProjectList:[],
       deptData:[],
@@ -197,7 +200,11 @@ export default {
          if(res.data.code === 200){
            console.log(res.data)
           this.ProjectList = res.data.data;
-          this.total = res.data.page.total
+          this.total = res.data.page.total;
+          this.object = {
+            proid: res.data.proid,
+            prodeclare: res.data.prodeclare
+          }
           // console.log(this.ProjectList)
          }
       })

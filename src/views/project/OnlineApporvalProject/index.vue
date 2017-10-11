@@ -84,7 +84,8 @@ export default {
             const proname = this.ProjectList[obj.index].proname
             const prodeclare = this.ProjectList[obj.index].prodeclare
             const id = this.ProjectList[obj.index].id;
-            console.log(prodeclare)
+            
+            console.log(id)
            return h('div',[
               h('router-link',{
                 props:{
