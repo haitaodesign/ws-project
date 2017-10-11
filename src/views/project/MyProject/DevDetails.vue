@@ -59,6 +59,11 @@
                       <Col span="24">
                         <Input type="textarea" :rows="4" placeholder="请输入项目概况"></Input>
                       </Col>
+                      <Col span="24" style="margin-top:10px;">
+                          <Upload action="http://192.168.22.46:5826/uploadFile">
+                            <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
+                          </Upload>
+                      </Col>
                       <Col span="6" style="margin-top:10px;">
                         <Button type="primary">回复</Button>
                       </Col>
@@ -423,7 +428,7 @@ export default {
       }
       getMembersBySquadId(params).then(res=>{
           this.createrData = res.data.data; 
-          
+
       })
 
     },
