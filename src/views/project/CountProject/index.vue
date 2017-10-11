@@ -121,7 +121,7 @@ export default {
    },
   created(){
     this.initDate();
-   this. initDeptData();
+   this.initDeptData();
    
     },
   methods:{
