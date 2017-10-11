@@ -14,12 +14,9 @@
             </FormItem>
             <FormItem label="项目状态">
                 <Select v-model="parms.prostate" placeholder="请选择"  style="width:200px">
-                    <Option value="1">立项待审批</Option>
-                    <Option value="2">开发中</Option>
-                    <Option value="3">上线待审批</Option>
-                    <Option value="4">完成</Option>
                     <Option value="5">驳回</Option>
                     <Option value="6">作废</Option>
+                    
                 </Select>
             </FormItem>
             <FormItem label="项目发起时间">
@@ -58,7 +55,7 @@
 
       </Form> 
       <Table :columns="columns10" :data="selectFinPro"></Table>
-      <Page :total="100" show-sizer show-elevator class='Pages'></Page>
+      <Page :total="100" show-sizer show-elevator class='Pages' ></Page>
   </div>
 </template>
 <script>
@@ -83,19 +80,19 @@ export default {
           title:'项目编号',
           key:'proid'
         },
-        {
+   {
           title:'项目名称',
           key:'proname',
           render:(h,obj)=>{
-            const proname = this. selectFinPro[obj.index].proname
-            const prodeclare = this.selectFinPro[obj.index].prodeclare
-            const id = this.selectFinPro[obj.index].id
-            console.log(prodeclare)
+            const proname = this.ProjectList[obj.index].proname
+            const prodeclare = this.ProjectList[obj.index].prodeclare
+            const id = this.ProjectList[obj.index].id;
+            console.log(id);
             return h('div',[
               h('router-link',{
-                  props:{
-                    to:'collectionproject/'+id
-                  }
+                props:{
+                  to:'setupapprvalproject/'+id
+                }
               },proname),
               h('div', prodeclare)
               ])
@@ -110,18 +107,7 @@ export default {
           const status = row.prostate;
           let text =''
           switch(status){
-            case '1':
-            text = '立项待审批';
-            break;
-             case '2':
-            text = '开发中';
-            break;
-             case '3':
-            text = '上线待审批';
-            break;
-             case '4':
-            text = '完成';
-            break;
+         
              case '5':
             text = '驳回';
             break;
@@ -243,7 +229,7 @@ export default {
     searchForm(){
       this.initData();
     },
-      
+     
   }
 }
 </script>

@@ -41,9 +41,9 @@
           </FormItem>
           <FormItem label="项目类型">
                 <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option value="1">产品</Option>
+                    <Option value="1">活动</Option>
+                    
                 </Select>
             </FormItem>
           <FormItem label="">
@@ -84,17 +84,31 @@ export default {
           render:(h,obj)=>{
             const proname = this.ProjectList[obj.index].proname
             const prodeclare = this.ProjectList[obj.index].prodeclare
+            const id = this.ProjectList[obj.index].id;
             console.log(prodeclare)
-            return h('div',[
-              h('div',proname),
+           return h('div',[
+              h('router-link',{
+                props:{
+                  to:'onlineapprovalproject/'+id
+                }
+              },proname),
               h('div', prodeclare)
               ])
-            // console.log(proname)
+            
           }
         },
         {
           title: '项目状态',
-          key: 'prostate'
+          key: 'prostate',
+          render:(h,obj)=>{
+            const row = obj.row;
+            const status = row.prostate;
+            let text =''
+            if(status === '3'){
+              text = "上线待审批"
+            }
+            return h('div',text);
+          }
         },
         {
           title: '创建时间',

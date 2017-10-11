@@ -16,39 +16,30 @@
             <FormItem label="项目发起时间">
               <Row>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createdate1"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createDateStart"></DatePicker>
                   </Col>
                   <Col span="2" style="text-align: center">-</Col>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createdate2"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.createDateEnd"></DatePicker>
                   </Col>
               </Row>
           </FormItem>
           <FormItem label="预计完成时间">
               <Row>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="parms.plansdate1"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.planSDateStart"></DatePicker>
                   </Col>
                   <Col span="2" style="text-align: center">-</Col>
                   <Col span="11">
-                      <DatePicker type="date" placeholder="选择日期" v-model="parms.plansdate2"></DatePicker>
+                      <DatePicker type="date" placeholder="选择日期" v-model="parms.planSDateEnd"></DatePicker>
                   </Col>
               </Row>
           </FormItem>
-           <FormItem label="项目类型">
-                <Select placeholder="请选择"  style="width:200px" v-model="parms.proType">
-                    <Option value="1">立项待审批</Option>
-                    <Option value="2">开发中</Option>
-                    <Option value="3">上线待审批</Option>
-                    <Option value="4">完成</Option>
-                    <Option value="5">驳回</Option>
-                    <Option value="6">作废</Option>
-                </Select>
-            </FormItem>
+    
           <FormItem label="">
               <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
-          <Button type="primary" style='margin-left: 30px;'>查询</Button>
+          <Button type="primary" style='margin-left: 30px;' @click="searchForm">查询</Button>
 
       </Form> 
       <Table :columns="columns10" :data="ProjectList"></Table>
@@ -97,34 +88,16 @@ export default {
         {
           title: '项目状态',
           key: 'prostate',
-          render:(h,params)=>{
-          const row = params.row;
-          const status = row.prostate;
-          let text =''
-          switch(status){
-            case '1':
-            text = '立项待审批';
-            break;
-             case '2':
-            text = '开发中';
-            break;
-             case '3':
-            text = '上线待审批';
-            break;
-             case '4':
-            text = '完成';
-            break;
-             case '5':
-            text = '驳回';
-            break;
-             case '6':
-            text = '作废';
-            break;
-            default:
-            text = '状态数据异常';
-          }
-          return h('div',text);
+      render:(h,params)=>{
+        const row = params.row;
+        const status = row.prostate;
+        let text =''
+        if(status === '1'){
+          text='立项待审批'
         }
+    
+          return h('div',text);
+      }
         },
         {
           title: '创建时间',
@@ -183,18 +156,20 @@ export default {
         }
       ],
       parms:{
+        planSDate:'',
         current:1,
-        pagesize:30,
+        pageSize:30,
         pages:0,
         total:0,
         creatersquadId:'',
         creater:'',
-        createdate1:'',
-        createdate2:'',
-        plansdate1:'',
-        plansdate2:'',
+        createDateStart:'',
+        createDateEnd:'',
+        planSDateEnd:'',
+        planSDateStart:'',
         protype:'',
         param:'',
+        proName:''
         
       },
       data1:[],

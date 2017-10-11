@@ -43,9 +43,9 @@
           </FormItem>
           <FormItem label="项目类型">
                 <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option value="1">产品</Option>
+                    <Option value="2">活动</Option>
+                    
                 </Select>
             </FormItem>
           <FormItem label="">
@@ -56,7 +56,7 @@
       </Form> 
     </div> 
         <Table :columns="columns10" :data="selectFinPro"></Table>
-        <Page :total="100" show-sizer show-elevator class='Pages' v-on:click='Onchange'></Page>
+        <Page :total="100" show-sizer show-elevator class='Pages' ></Page>
    </div>
 </template>
 <script>
@@ -101,8 +101,10 @@ export default {
             const id = this.selectFinPro[obj.index].id
             console.log(prodeclare)
             return h('div',[
-              h('roter-link',{
-               
+              h('router-link',{
+               props:{
+                  to:'setupapprvalproject/'+id
+                }
               },proname),
               h('div', prodeclare)
               ])
@@ -145,9 +147,7 @@ export default {
         }
       })
     },
-    Onchange(){
-      this.initData();
-    }
+    
   }
 }
 </script>
