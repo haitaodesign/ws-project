@@ -423,7 +423,9 @@ export default {
       }
       getMembersBySquadId(params).then(res=>{
           this.createrData = res.data.data; 
+          
       })
+
     },
 
   }

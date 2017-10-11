@@ -32,7 +32,13 @@
                   </Col>
               </Row>
           </FormItem>
-           <FormItem label="项目类型">
+          <FormItem label="项目类型">
+                <Select placeholder="请选择"  style="width:200px" v-model="params.proState">
+                    <Option value="1">产品</Option>
+                    <Option value="2">活动</Option>
+                </Select>
+            </FormItem>
+           <FormItem label="项目状态">
                 <Select placeholder="请选择"  style="width:200px" v-model="params.proType">
                     <Option value="1">立项待审批</Option>
                     <Option value="2">开发中</Option>
@@ -157,7 +163,8 @@ export default {
         planSDateStart:'',
         planSDateEnd:'',
         proType:'',
-        proName:''
+        proName:'',
+        proState:''
       },
       total:null,
       pagesizeoption:[10,20,30],
