@@ -3,17 +3,13 @@
      <PageTitle :BreadData="breadData"></PageTitle>
       <Form inline :label-width="90" :model='parms'>
           <FormItem label="项目发起部门">
-                <Select v-model="parms.creatersquadid" placeholder="请选择" style="width:200px;">
-                    <Option value="beijing">3</Option>
-                    <Option value="shanghai">1</Option>
-                    <Option value="shenzhen">2</Option>
-                </Select>
+                
+              <Cascader :data="deptData" :load-data="loadGroupData" @on-change="deptChange"></Cascader>
+               
           </FormItem>
           <FormItem label="项目发起人">
                 <Select v-model="parms.creater" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option v-for="item in createrData" :key="item.id" v-model:value="item.id">{{item.member}}</Option>
                 </Select>
           </FormItem>
       
@@ -41,15 +37,15 @@
           </FormItem>
           <FormItem label="项目类型">
                 <Select v-model="parms.protype" placeholder="请选择"  style="width:200px">
-                    <Option value="beijing">北京市</Option>
-                    <Option value="shanghai">上海市</Option>
-                    <Option value="shenzhen">深圳市</Option>
+                    <Option value="1">产品</Option>
+                    <Option value="1">活动</Option>
+                    
                 </Select>
             </FormItem>
           <FormItem label="">
               <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
-          <Button type="primary" style='margin-left: 30px;'>查询</Button>
+          <Button type="primary" style='margin-left: 30px;' @click='searchForm'>查询</Button>
 
       </Form> 
       <Table :columns="columns10" :data="ProjectList"></Table>
@@ -64,6 +60,9 @@ import {getOnlinePro} from '../../../api/requestdata'
 import {getselectInsertProPassLog} from '../../../api/requestdata'
 //审批驳回
 import {getselectInsertProReturnLog} from '../../../api/requestdata'
+import { getMembersBySquadId } from '../../../api/myproject';
+import {getDeptData} from '../../../api/requestdata';
+import {getGroupData} from '../../../api/requestdata';
 export default {
   components:{
     PageTitle
@@ -84,17 +83,32 @@ export default {
           render:(h,obj)=>{
             const proname = this.ProjectList[obj.index].proname
             const prodeclare = this.ProjectList[obj.index].prodeclare
-            console.log(prodeclare)
-            return h('div',[
-              h('div',proname),
+            const id = this.ProjectList[obj.index].id;
+            
+            console.log(id)
+           return h('div',[
+              h('router-link',{
+                props:{
+                  to:'onlineapprovalproject/'+id
+                }
+              },proname),
               h('div', prodeclare)
               ])
-            // console.log(proname)
+            
           }
         },
         {
           title: '项目状态',
-          key: 'prostate'
+          key: 'prostate',
+          render:(h,obj)=>{
+            const row = obj.row;
+            const status = row.prostate;
+            let text =''
+            if(status === '3'){
+              text = "上线待审批"
+            }
+            return h('div',text);
+          }
         },
         {
           title: '创建时间',
@@ -173,22 +187,81 @@ export default {
         
       },
       data1:[],
-      ProjectList:[]
+      ProjectList:[],
+      deptData:[],
+      createrData:[]
     }
   },
   created(){
     this.initData();
+    this.initDeptData();
   },
   methods:{
     initData(){
-      getOnlinePro().then(res=>{
+      getOnlinePro(this.parms).then(res=>{
          if(res.data.code === 200){
            console.log(res.data)
           this.ProjectList = res.data.data;
           // console.log(this.ProjectList)
          }
       })
-    }
+    },    
+    // 发起部门数据
+    initDeptData(){
+      getDeptData().then(res=>{
+        let depdata=res.data.data;
+        depdata.forEach(function(element) {
+          this.deptData.push({
+            value:element.departmentid,
+            label:element.department,
+            children: [],
+            loading: false
+          });
+        },this);
+      })
+    },
+    // 组数据
+    initGroupData(parms,item){
+      getGroupData(parms).then(res=>{
+        let groupdata=res.data.data;
+        groupdata.forEach(function(element) {
+          item.children.push({
+            value:element.squadid,
+            label:element.squad
+          })
+        }, this);
+        item.loading=false;
+      })
+    },
+    // Cascader加载组数据
+    loadGroupData(item,callback){
+      item.loading=true;
+      let deptId=item.value;
+      let parms = {
+        id:item.value
+      };
+      this.initGroupData(parms,item);
+      callback();
+    },
+    // 监听Cascader组件数据
+    deptChange(value,selectedData){
+      // 通过小组id获取人
+      this.parms.createrSquadId = selectedData[1].value;
+      this.initCreaterData();
+    },
+    // 初始化项目发起人数据
+    initCreaterData(){
+      const parms = {
+        squadId:this.parms.createrSquadId
+      }
+      getMembersBySquadId(parms).then(res=>{
+          this.createrData = res.data.data; 
+      })
+    },
+    // 点击查询请求数据
+    searchForm(){
+      this.initData();
+    },
   }
 }
 </script>

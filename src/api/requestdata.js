@@ -147,7 +147,7 @@ export function getUpDetails(data){
         }
     })
 }
-//上线待审批
+//上线待审批列表
 export function getOnlinePro(data){
     return fetch({
         url:'/selectOnPro',
@@ -155,6 +155,17 @@ export function getOnlinePro(data){
         data:{
             current:1,
             pageSize:5
+        }
+    })
+}
+//上线待审批详细信息
+export function getselectOnProInfo(data){
+    return fetch({
+        url:'/selectOnProInfo',
+        method:'post',
+        data:{
+            id:1,
+            proId:1
         }
     })
 }

@@ -164,7 +164,7 @@ export default {
         planSDateEnd:'',
         proType:'',
         proName:'',
-        proState:''
+        
       },
       total:null,
       pagesizeoption:[10,20,30],

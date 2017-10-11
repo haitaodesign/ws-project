@@ -66,7 +66,7 @@ const constantRouteMap=[
         name:'上线待审批',
         component:OnlineApporvalProject
       },{
-        path:'/onlineapprovalproject/id',
+        path:'/onlineapprovalproject/:id',
         name:'上线待审批详情页',
         component:onlineapprovalprojectDetails
       },{
