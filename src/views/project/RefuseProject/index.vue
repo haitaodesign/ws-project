@@ -54,11 +54,11 @@
           <FormItem label="">
               <Input v-model="parms.param" placeholder="请输入关键字"></Input>
           </FormItem>
-          <Button type="primary" style='margin-left: 30px;'>查询</Button>
+          <Button type="primary" style='margin-left: 30px;' @click="searchForm">查询</Button>
 
       </Form> 
       <Table :columns="columns10" :data="selectFinPro"></Table>
-      <Page :total="100" show-sizer show-elevator class='Pages' v-on:click='Onchange'></Page>
+      <Page :total="100" show-sizer show-elevator class='Pages'></Page>
   </div>
 </template>
 <script>
@@ -178,7 +178,7 @@ export default {
   },
   methods:{
       initData(){
-          getselectRecPro().then(res=>{
+          getselectRecPro(this.parms).then(res=>{
               if(res.data.code === 200){
                   this.selectFinPro = res.data.data;
                   this.pages = res.data.page.total
@@ -189,7 +189,7 @@ export default {
       },
           // 发起部门数据
     initDeptData(){
-      getDeptData(this.parms).then(res=>{
+      getDeptData().then(res=>{
         let depdata=res.data.data;
         depdata.forEach(function(element) {
           this.deptData.push({
@@ -243,9 +243,7 @@ export default {
     searchForm(){
       this.initData();
     },
-      Onchange(){
-          this.initData();
-      }
+      
   }
 }
 </script>
