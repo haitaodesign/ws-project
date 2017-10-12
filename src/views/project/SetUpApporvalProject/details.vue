@@ -107,6 +107,7 @@
 <script>
 import PageTitle from '../../components/PageTitle'
 import { getUpDetails } from '../../../api/requestdata'
+import {getUpProjectList} from '../../../api/requestdata'
 export default {
   components: {
     PageTitle
@@ -226,7 +227,7 @@ export default {
       this.isOk = true;
     },
     sure(name) {
-      getUpDetails(this.objectId).then(res => {
+      getUpProjectList(this.objectId).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
           // window.location.href = '/setupapprvalproject'
@@ -236,8 +237,10 @@ export default {
           // }else{
           //   console.log("数据异常")
           // }
-          this.$router.push('/setupapprvalproject');
+         
+          this.initData();
           this.$Message.info('已确定驳回');
+
         }
       })
     },
@@ -247,7 +250,7 @@ export default {
       this.$Message.info('点击了取消');
     },
     confirm(name) {
-      getUpDetails(this.objectId).then(res => {
+      getUpProjectList(this.objectId).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
           // window.location.href = '/setupapprvalproject'

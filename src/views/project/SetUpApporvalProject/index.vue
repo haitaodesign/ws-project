@@ -49,6 +49,32 @@
       </Form> 
       <Table :columns="columns10" :data="ProjectList"></Table>
       <Page :total="total" show-sizer show-elevator class='Pages':show-total="true" @on-change="pageChange" @on-page-size-change="pagesizeChange" :page-size-opts="pagesizeoption"></Page>
+      <Modal v-model="isUpDown" width="360" :styles="{top: '200px'}">
+
+        <p slot="header" style="color:#f60;text-align:center">
+          <Icon type="information-circled"></Icon>
+          <span>是否确认驳回</span>
+        </p>
+        <div style='text-align: center' class='btn'>
+          <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='sure(objectId)'>确定</Button>
+          <Button type="error" style='width: 80px;' v-on:click='del()'>取消</Button>
+        </div>
+        <div slot="footer">
+
+        </div>
+    </Modal>
+    <modal v-model="isOk" width="360" :styles="{top: '200px'}" >
+      <p slot="header" style="color:#666;text-align:center">
+        <span>是否确认通过</span>
+      </p>
+      <div style='text-align: center' class='btn'>
+        <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='confirm(objectId)'>确定</Button>
+        <Button type="error" style='width: 80px;' v-on:click='del()'>取消</Button>
+      </div>
+      <div slot="footer">
+
+      </div>
+    </modal>
   </div>
 </template>
 <script>
@@ -135,17 +161,18 @@ export default {
                 },
                 on:{
                   click:()=>{
-
-                        getUpProjectList(this.object).then(res=>{
-                          if(res.data.code === 200){
-                            this.initData();
-                            console.log(res.data)
-                            // this.$router.push('/collectionproject');
-                            // this.ProjectList = res.data.data;
-                            // console.log(this.ProjectList)
-                          }
-                        })
-                    // this.show(obj.index)
+                        this.isOk = true;
+                        
+                    //     getUpProjectList(this.object).then(res=>{
+                    //       if(res.data.code === 200){
+                    //         this.initData();
+                    //         console.log(res.data)
+                    //         // this.$router.push('/collectionproject');
+                    //         // this.ProjectList = res.data.data;
+                    //         // console.log(this.ProjectList)
+                    //       }
+                    //     })
+                    // // this.show(obj.index)
                   }
                 }
                  
@@ -157,16 +184,17 @@ export default {
                 },
                 on:{
                   click:()=>{
+                    this.isUpDown = true;
                     // this.remove(obj.index)
-                    getUpProjectList(this.object).then(res=>{
-                    if(res.data.code === 200){
-                      this.initData();
-                      console.log(res.data)
-                      // this.$router.push('/collectionproject');
-                      // this.ProjectList = res.data.data;
-                      // console.log(this.ProjectList)
-                    }
-                  })
+                  //   getUpProjectList(this.object).then(res=>{
+                  //   if(res.data.code === 200){
+                  //     this.initData();
+                  //     console.log(res.data)
+                  //     // this.$router.push('/collectionproject');
+                  //     // this.ProjectList = res.data.data;
+                  //     // console.log(this.ProjectList)
+                  //   }
+                  // })
                   }
                 }
               },'驳回')
@@ -192,12 +220,14 @@ export default {
         
       },
       data1:[],
-      object:[],
+      objectId:[],
       total:null,
       ProjectList:[],
       deptData:[],
       createrData:[],
       pagesizeoption:[10,20,30],
+      isUpDown: false,
+      isOk: false
     }
   },
   created(){
@@ -208,10 +238,10 @@ export default {
     initData(){
      getUpProjectList(this.parms).then(res=>{
          if(res.data.code === 200){
-           console.log(res.data)
+          //  console.log(res.data)
           this.ProjectList = res.data.data;
           this.total = res.data.page.total;
-          this.object = {
+          this.objectId = {
             proid: res.data.proid,
             prodeclare: res.data.prodeclare
           }
@@ -288,6 +318,41 @@ export default {
     pagesizeChange(value){
       this.parms.pageSize = value;
       this.initData();
+    },
+     sure(name) {
+      getUpProjectList(this.objectId).then(res => {
+        console.log(res.data)
+        if (res.data.code === 200) {
+          // window.location.href = '/setupapprvalproject'
+          // console.log(this.objectId.proid)
+          // if(this.objectId.proid === 1){
+          //   this.$router.push('/setupapprvalproject');
+          // }else{
+          //   console.log("数据异常")
+          // }
+          // this.$router.push('/setupapprvalproject');
+          // this.isOk = false;
+          this.isUpDown = false;
+          this.initData();
+          this.$Message.info('已确定驳回');
+        }
+      })
+    },
+    del(name) {
+      this.isUpDown = false;
+      this.isOk = false
+      this.$Message.info('点击了取消');
+    },
+    confirm(name) {
+      getUpProjectList(this.objectId).then(res => {
+        console.log(res.data)
+        if (res.data.code === 200) {
+        
+          this.isOk = false;
+          this.initData();
+          this.$Message.info('已确定通过');
+        }
+      })
     },
     onclick(){
       
