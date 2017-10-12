@@ -49,32 +49,32 @@
       </Form> 
       <Table :columns="columns10" :data="ProjectList"></Table>
       <Page :total="total" show-sizer show-elevator class='Pages':show-total="true" @on-change="pageChange" @on-page-size-change="pagesizeChange" :page-size-opts="pagesizeoption"></Page>
-      <Modal v-model="isUpDown" width="360" :styles="{top: '200px'}">
+     
+  <Modal v-model="isUpDown" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
 
-        <p slot="header" style="color:#f60;text-align:center">
-          <Icon type="information-circled"></Icon>
-          <span>是否确认驳回</span>
-        </p>
-        <div style='text-align: center' class='btn'>
-          <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='sure(objectId)'>确定</Button>
-          <Button type="error" style='width: 80px;' v-on:click='del()'>取消</Button>
-        </div>
-        <div slot="footer">
+    <h2 style='color:#000;margin-bottom:10px;'>项目驳回</h2>
+    <Form  :model="objectId"  :label-width="110">
+       <FormItem label="请输入驳回的原因" >
+            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"  placeholder="请输入..."></Input>
+        </FormItem>
 
-        </div>
-    </Modal>
-    <modal v-model="isOk" width="360" :styles="{top: '200px'}" >
-      <p slot="header" style="color:#666;text-align:center">
-        <span>是否确认通过</span>
-      </p>
-      <div style='text-align: center' class='btn'>
-        <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='confirm(objectId)'>确定</Button>
-        <Button type="error" style='width: 80px;' v-on:click='del()'>取消</Button>
-      </div>
-      <div slot="footer">
+    </Form>
+  </Modal>
 
-      </div>
-    </modal>
+   
+    
+    
+  <Modal v-model="isOk" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
+
+    <h2 style='color:#000;margin-bottom:10px;'>项目通过</h2>
+    <Form  :model="objectId"  :label-width="110">
+       <FormItem label="请输入通过的原因">
+            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+        </FormItem>
+
+    </Form>
+  </Modal>
+
   </div>
 </template>
 <script>
@@ -83,15 +83,19 @@ import {getUpProjectList} from '../../../api/requestdata'
 import { getMembersBySquadId } from '../../../api/myproject';
 import {getDeptData} from '../../../api/requestdata';
 import {getGroupData} from '../../../api/requestdata';
+import {getpassOrReject} from '../../../api/requestdata'
 export default {
   components:{
     PageTitle
   },
   data(){
+  
     return{
       breadData:[{
         name:'立项待审批'
       }],
+   
+    
       columns10:[
         {
           title:'项目编号',
@@ -101,15 +105,35 @@ export default {
           title:'项目名称',
           key:'proname',
           render:(h,obj)=>{
-            const proname = this.ProjectList[obj.index].proname
-            const prodeclare = this.ProjectList[obj.index].prodeclare
-            const id = this.ProjectList[obj.index].id;
+            const row = obj.row;
+            // const proname = this.ProjectList[obj.index].proname;
+            // const prodeclare = this.ProjectList[obj.index].prodeclare;
+            // const id = this.ProjectList[obj.index].id;
+            const proname = row.proname;
+            const prodeclare = row.prodeclare;
+            const id = row.id
+            const proId = row.proid
+            const routeparams ={
+              name:'立项待审批详情页',
+              parms:{
+                id:row.id
+              },
+              query:{
+                proId:row.proid
+              }
+          } 
             console.log(id);
             return h('div',[
-              h('router-link',{
-                props:{
-                  to:'setupapprvalproject/'+id
-                }
+              h('h3',{
+              style:{
+                color:'#2d8cf0',
+                cursor:'pointer'
+              },
+                on:{
+                  click:()=>{
+                    this.$router.push(routeparams);
+                  }
+              }
               },proname),
               h('div', prodeclare)
               ])
@@ -119,8 +143,8 @@ export default {
         {
           title: '项目状态',
           key: 'prostate',
-      render:(h,params)=>{
-        const row = params.row;
+      render:(h,parms)=>{
+        const row = parms.row;
         const status = row.prostate;
         let text =''
         if(status === '1'){
@@ -162,17 +186,7 @@ export default {
                 on:{
                   click:()=>{
                         this.isOk = true;
-                        
-                    //     getUpProjectList(this.object).then(res=>{
-                    //       if(res.data.code === 200){
-                    //         this.initData();
-                    //         console.log(res.data)
-                    //         // this.$router.push('/collectionproject');
-                    //         // this.ProjectList = res.data.data;
-                    //         // console.log(this.ProjectList)
-                    //       }
-                    //     })
-                    // // this.show(obj.index)
+                  
                   }
                 }
                  
@@ -185,16 +199,8 @@ export default {
                 on:{
                   click:()=>{
                     this.isUpDown = true;
-                    // this.remove(obj.index)
-                  //   getUpProjectList(this.object).then(res=>{
-                  //   if(res.data.code === 200){
-                  //     this.initData();
-                  //     console.log(res.data)
-                  //     // this.$router.push('/collectionproject');
-                  //     // this.ProjectList = res.data.data;
-                  //     // console.log(this.ProjectList)
-                  //   }
-                  // })
+            
+                 
                   }
                 }
               },'驳回')
@@ -220,14 +226,24 @@ export default {
         
       },
       data1:[],
-      objectId:[],
+      objectId:{
+       
+        creatName:'小',
+        explain:'',
+        
+      },
       total:null,
       ProjectList:[],
       deptData:[],
       createrData:[],
       pagesizeoption:[10,20,30],
       isUpDown: false,
-      isOk: false
+      isOk: false,
+    
+    
+    
+      
+  
     }
   },
   created(){
@@ -241,11 +257,19 @@ export default {
            console.log(res.data)
           this.ProjectList = res.data.data;
           this.total = res.data.page.total;
+          console.log(res.data.data.proid)
+          
           this.objectId = {
-            proid: res.data.proid,
-            prodeclare: res.data.prodeclare
+            proid: res.data.data.proid,
+            id: res.data.data.id,
+            prostate: res.data.data.prostate
           }
-          // console.log(this.ProjectList)
+          // this.objectId.push({
+          //    proid:res.data.data.proid,
+          //    id: res.data.data.id,
+          //   prostate: res.data.data.prostate
+          // })
+          console.log(this.objectId)
          }
       })
     },
@@ -320,7 +344,7 @@ export default {
       this.initData();
     },
      sure(name) {
-      getUpProjectList(this.objectId).then(res => {
+      getpassOrReject(this.objectId).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
           // window.location.href = '/setupapprvalproject'
@@ -356,8 +380,34 @@ export default {
     },
     onclick(){
       
+    },
+    ok() {
+      this.$Message.info('点击了确定');
+      console.log(this.objectId)
+      getpassOrReject(this.objectId).then(res => {
+        console.log(res.data)
+        console.log(this.objectId)
+        if (res.data.code === 200) {
+          // window.location.href = '/setupapprvalproject'
+          // console.log(this.objectId.proid)
+          // if(this.objectId.proid === 1){
+          //   this.$router.push('/setupapprvalproject');
+          // }else{
+          //   console.log("数据异常")
+          // }
+          // this.$router.push('/setupapprvalproject');
+          // this.isOk = false;
+         
+          this.initData();
+        
+        }
+      })
+    },
+    cancel() {
+      this.$Message.info('点击了取消');
     }
-  }
+  },
+ 
 }
 </script>
 <style scoped>

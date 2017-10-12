@@ -147,6 +147,16 @@ export function getUpDetails(data){
         }
     })
 }
+//立项待审批驳回和通过
+export function getpassOrReject(){
+    return fetch({
+        url:'/passOrReject',
+        method:'post',
+        data:{
+         
+        }
+    })
+}
 //上线待审批列表
 export function getOnlinePro(data){
     return fetch({
