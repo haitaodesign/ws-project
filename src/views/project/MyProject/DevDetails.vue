@@ -59,6 +59,11 @@
                       <Col span="24">
                         <Input type="textarea" :rows="4" placeholder="请输入项目概况"></Input>
                       </Col>
+                      <Col span="24" style="margin-top:10px;">
+                          <Upload action="http://192.168.22.46:5826/uploadFile">
+                            <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
+                          </Upload>
+                      </Col>
                       <Col span="6" style="margin-top:10px;">
                         <Button type="primary">回复</Button>
                       </Col>
@@ -79,7 +84,7 @@
           <Card dis-hover >
              <Tabs class="home-push">
                 <TabPane label="参与组" name="0" style="padding:10px;">
-                    <Button type="primary" @click="addHandleClick">添加</Button>
+                    <Button type="primary" @click="addHandleClick" style="margin-bottom:10px;">添加</Button>
                     <Table border height="200" :data="devDetails.taskList" :columns="squadColumns" class="apply-squad">
                     </Table>
                 </TabPane>
@@ -145,14 +150,14 @@ export default {
           width:65
         },{
           title:'任务名称',
-          key:'taskname',
+          key:'taskName',
           width:100,
           render:(h,params)=>{
             const row = params.row;
             const routeparams ={
               name:'任务分配详情页',
               params:{
-                proId:row.proid
+                proId:row.proId
               },
               query:{
                 taskId:row.taskId
@@ -168,25 +173,25 @@ export default {
                   this.$router.push(routeparams);
                 }
               }
-            },row.taskname)
+            },row.taskName)
           }
         },{
           title:'组名称',
-          key:'squadId',
+          key:'squad',
         },{
           title:'开始时间',
-          key:'sdate',
+          key:'sDate',
         },{
           title:'结束时间',
-          key:'edate',
+          key:'eDate',
         },{
           title:'预计工期',
           key:'workDate'
         },{
           title:'任务状态',
-          key:'taskstate',
+          key:'taskState',
           render:(h,params)=>{
-            const taskstate = params.row.taskstate;
+            const taskstate = params.row.taskState;
             let text =''
             switch(taskstate){
               case '1':
@@ -215,6 +220,7 @@ export default {
           width: 150,
           align: 'center',
           render: (h, params) => {
+              const row = params.row;
               return h('div', [
                   h('Button', {
                       props: {
@@ -223,7 +229,18 @@ export default {
                       },
                       on: {
                           click: () => {
+                            // 初始化修改弹窗
                             this.addshow=true;
+                            this.addmodaltitle = '修改参与组';
+                            this.partInParams.type=2;
+                            this.partInParams.taskName = row.taskName;
+                            this.partInParams.SquadName.push(row.departmentId);
+                            this.partInParams.SquadName.push(row.squadId);
+                            this.partInParams.sdate = new Date(row.sDate);
+                            this.partInParams.edate = new Date(row.eDate);
+                             this.partInParams.sDate = row.sDate;
+                            this.partInParams.eDate = row.eDate;
+                            this.partInParams.workDate = parseInt(row.workDate);
                           }
                       }
                   }, '修改'),
@@ -333,7 +350,6 @@ export default {
     ok(name){
       this.$refs[name].validate((valid) => {
           if(valid){
-            console.log(this.partInParams);
             groupHandle(this.partInParams).then(res=>{
               if(res.data.code==200){
                  this.initDetailsData();
@@ -346,7 +362,6 @@ export default {
             }).catch(err=>{
               this.$Message.error('系统异常！');
             })
-            
           }else{
             // 不关闭弹窗，提示错误信息
             this.$Message.error('表单验证失败，请填写完整的信息！');
@@ -401,15 +416,14 @@ export default {
       this.initCreaterData();
     },
     edateChange(date){
-      this.partInParams.sDate=date;
+      this.partInParams.eDate=date;
     },
     sdateChange(date){
-      this.partInParams.eDate=date;
+      this.partInParams.sDate=date;
     },
     initLogRecordList(){
       getMyProjectDetailsLog(this.logParams).then(res=>{
         this.logRecordList = res.data.data[0].logRecordList;
-        console.log(this.logRecordList);
       }).catch(err=>{
 
       })
@@ -423,7 +437,7 @@ export default {
       }
       getMembersBySquadId(params).then(res=>{
           this.createrData = res.data.data; 
-          
+
       })
 
     },
