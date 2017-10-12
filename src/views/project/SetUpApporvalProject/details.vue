@@ -183,13 +183,35 @@ export default {
         if (res.data.code === 200) {
           this.RecProInfo = res.data.data[0].taskList;
           this.baseInfo = res.data.data[0].projectInfo;
-          this.log = res.data.data[0].logRecordList
+          this.log = res.data.data[0].logRecordList;
+          this.baseInfo.prostate = res.data.data[0].projectInfo.prostate
           this.objectId = {
             proid: res.data.data[0].projectInfo.proid,
             prodeclare: res.data.data[0].projectInfo.prodeclare
           }
           console.log(this.objectId)
-
+          switch(this.baseInfo.prostate){
+            case '1':
+            this.baseInfo.prostate = '立项待审批';
+            break;
+             case '2':
+            this.baseInfo.prostate = '开发中';
+            break;
+             case '3':
+            this.baseInfo.prostate = '上线待审批';
+            break;
+             case '4':
+            this.baseInfo.prostate = '完成';
+            break;
+             case '5':
+            this.baseInfo.prostate = '驳回';
+            break;
+             case '6':
+            this.baseInfo.prostate = '作废';
+            break;
+            default:
+            this.baseInfo.prostate = '状态数据异常';
+          }
         }
       })
     },

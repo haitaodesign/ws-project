@@ -138,8 +138,9 @@ export default {
 
                         getUpProjectList(this.object).then(res=>{
                           if(res.data.code === 200){
+                            this.initData();
                             console.log(res.data)
-                            this.$router.push('/collectionproject');
+                            // this.$router.push('/collectionproject');
                             // this.ProjectList = res.data.data;
                             // console.log(this.ProjectList)
                           }
@@ -157,6 +158,15 @@ export default {
                 on:{
                   click:()=>{
                     // this.remove(obj.index)
+                    getUpProjectList(this.object).then(res=>{
+                    if(res.data.code === 200){
+                      this.initData();
+                      console.log(res.data)
+                      // this.$router.push('/collectionproject');
+                      // this.ProjectList = res.data.data;
+                      // console.log(this.ProjectList)
+                    }
+                  })
                   }
                 }
               },'驳回')
