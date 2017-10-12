@@ -64,6 +64,7 @@
       <Tabs class="home-push">
         <TabPane label="日志记录" name="0" style="padding:10px;">
           <Table border :columns="columns1" :data="log" height="230"></Table>
+          
         </TabPane>
       </Tabs>
       </Col>
@@ -190,32 +191,32 @@ export default {
             proId: res.data.data[0].ProInfo.proid,
             prodeclare: res.data.data[0].ProInfo.prodeclare
           }
-          if(this.baseInfo.prostate == '4'){
-            this.baseInfo.prostate = '上线待审批';
-          }
-          
-          // switch(this.baseInfo.prostate){
-          //   case '1':
-          //   this.baseInfo.prostate = '立项待审批';
-          //   break;
-          //    case '2':
-          //   this.baseInfo.prostate = '开发中';
-          //   break;
-          //    case '3':
+          // if(this.baseInfo.prostate == '4'){
           //   this.baseInfo.prostate = '上线待审批';
-          //   break;
-          //    case '4':
-          //   this.baseInfo.prostate = '完成';
-          //   break;
-          //    case '5':
-          //   this.baseInfo.prostate = '驳回';
-          //   break;
-          //    case '6':
-          //   this.baseInfo.prostate = '作废';
-          //   break;
-          //   default:
-          //   this.baseInfo.prostate = '状态数据异常';
           // }
+          
+          switch(this.baseInfo.prostate){
+            case '1':
+            this.baseInfo.prostate = '立项待审批';
+            break;
+             case '2':
+            this.baseInfo.prostate = '开发中';
+            break;
+             case '3':
+            this.baseInfo.prostate = '上线待审批';
+            break;
+             case '4':
+            this.baseInfo.prostate = '完成';
+            break;
+             case '5':
+            this.baseInfo.prostate = '驳回';
+            break;
+             case '6':
+            this.baseInfo.prostate = '作废';
+            break;
+            default:
+            this.baseInfo.prostate = '状态数据异常';
+          }
       
           console.log(this.objectId)
 

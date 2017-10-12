@@ -43,7 +43,7 @@ const constantRouteMap=[
         component:SetUpApporvalProject,
       },{
         path:'/setupapprvalproject/:id',
-        name:'审批详情页',
+        name:'立项待审批详情页',
         component:SetUpApporvalProjectDetails
       },{
         path:'/myproject',

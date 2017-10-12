@@ -50,7 +50,7 @@
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
-
+import {getselectFinProInfo} from '../../../api/requestdata'
 
 export default {
   components:{
@@ -73,7 +73,11 @@ export default {
   },
   methods:{
     initData(){
-    
+      getselectFinProInfo().then(res=>{
+        if(res.data.code === 200){
+          console.log(res.data.data)
+        }
+      })
     }
   }
 }

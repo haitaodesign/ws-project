@@ -4,7 +4,7 @@
     <PageTitle :BreadData="breadData"></PageTitle>
     <Row>
       <Col span="4" offset="8">
-      <Button type="primary" @click='ok'>通过</Button>
+      <Button type="primary" @click='comit'>通过</Button>
       </Col>
       <Col span="4">
       <Button type="primary" @click="upDown">驳回</Button>
@@ -75,49 +75,47 @@
       </Tabs>
       </Col>
     </Row>
-    <Modal v-model="isUpDown" width="360" :styles="{top: '200px'}">
 
-      <p slot="header" style="color:#f60;text-align:center">
-        <Icon type="information-circled"></Icon>
-        <span>是否确认驳回</span>
-      </p>
-      <div style='text-align: center' class='btn'>
-        <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='sure(objectId)'>确定</Button>
-        <Button type="error" style='width: 80px;' v-on:click='del()'>取消</Button>
-      </div>
-      <div slot="footer">
+      <Modal v-model="isUpDown" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
+    <h2 style='color:#000;margin-bottom:10px;'>项目驳回</h2>
+    <Form  :model="objectId"  :label-width="110">
+       <FormItem label="请输入驳回的原因">
+            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+        </FormItem>
 
-      </div>
-    </Modal>
-    <modal v-model="isOk" width="360" :styles="{top: '200px'}" >
-      <p slot="header" style="color:#666;text-align:center">
-        <span>是否确认通过</span>
-      </p>
-      <div style='text-align: center' class='btn'>
-        <Button type="primary" style='margin-right: 50px;width:80px;' v-on:click='confirm(objectId)'>确定</Button>
-        <Button type="error" style='width: 80px;' v-on:click='del()'>取消</Button>
-      </div>
-      <div slot="footer">
+    </Form>
+  </Modal>
+  <Modal v-model="isOk" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
 
-      </div>
-    </modal>
+    <h2 style='color:#000;margin-bottom:10px;'>项目通过</h2>
+    <Form  :model="objectId"  :label-width="110">
+       <FormItem label="请输入通过的原因">
+            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+        </FormItem>
+
+    </Form>
+  </Modal>
 
   </div>
 </template>
 <script>
 import PageTitle from '../../components/PageTitle'
 import { getUpDetails } from '../../../api/requestdata'
+import {getUpProjectList} from '../../../api/requestdata'
+import {getpassOrReject} from '../../../api/requestdata'
 export default {
   components: {
     PageTitle
   },
   data() {
+
     return {
       isUpDown: false,
       isOk: false,
       breadData: [{
-        name: '项目驳回详情页'
+        name: '立项待审批详情页'
       }],
+   
       columns1: [
         {
           title: '类型',
@@ -169,7 +167,13 @@ export default {
       RecProInfo: [],
       log: [],
       baseInfo: [],
-      objectId: []
+       objectId:{
+        proid:'',
+        id:'',
+        creatName:'小',
+        explain:'',
+        prostate:''
+      },
     }
   },
   created() {
@@ -183,13 +187,36 @@ export default {
         if (res.data.code === 200) {
           this.RecProInfo = res.data.data[0].taskList;
           this.baseInfo = res.data.data[0].projectInfo;
-          this.log = res.data.data[0].logRecordList
+          this.log = res.data.data[0].logRecordList;
+          this.baseInfo.prostate = res.data.data[0].projectInfo.prostate
           this.objectId = {
             proid: res.data.data[0].projectInfo.proid,
-            prodeclare: res.data.data[0].projectInfo.prodeclare
+            prostate: res.data.data[0].projectInfo.prostate,
+            id:res.data.data[0].projectInfo.id
           }
           console.log(this.objectId)
-
+          switch(this.baseInfo.prostate){
+            case '1':
+            this.baseInfo.prostate = '立项待审批';
+            break;
+             case '2':
+            this.baseInfo.prostate = '开发中';
+            break;
+             case '3':
+            this.baseInfo.prostate = '上线待审批';
+            break;
+             case '4':
+            this.baseInfo.prostate = '完成';
+            break;
+             case '5':
+            this.baseInfo.prostate = '驳回';
+            break;
+             case '6':
+            this.baseInfo.prostate = '作废';
+            break;
+            default:
+            this.baseInfo.prostate = '状态数据异常';
+          }
         }
       })
     },
@@ -200,11 +227,12 @@ export default {
       this.isUpDown = true;
 
     },
-    ok() {
+    comit() {
       this.isOk = true;
+      
     },
     sure(name) {
-      getUpDetails(this.objectId).then(res => {
+      getUpProjectList(this.objectId).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
           // window.location.href = '/setupapprvalproject'
@@ -214,8 +242,10 @@ export default {
           // }else{
           //   console.log("数据异常")
           // }
-          this.$router.push('/setupapprvalproject');
+         
+          this.initData();
           this.$Message.info('已确定驳回');
+
         }
       })
     },
@@ -225,7 +255,7 @@ export default {
       this.$Message.info('点击了取消');
     },
     confirm(name) {
-      getUpDetails(this.objectId).then(res => {
+      getUpProjectList(this.objectId).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
           // window.location.href = '/setupapprvalproject'
@@ -234,6 +264,30 @@ export default {
         }
       })
     },
+    ok() {
+      this.$Message.info('点击了确定');
+      getpassOrReject(this.objectId).then(res => {
+        console.log(res.data)
+        
+        if (res.data.code === 200) {
+          // window.location.href = '/setupapprvalproject'
+          // console.log(this.objectId.proid)
+          // if(this.objectId.proid === 1){
+          //   this.$router.push('/setupapprvalproject');
+          // }else{
+          //   console.log("数据异常")
+          // }
+          // this.$router.push('/setupapprvalproject');
+          // this.isOk = false;
+
+          this.initData();
+
+        }
+      })
+    },
+    cancel() {
+      this.$Message.info('点击了取消');
+    }
   
   },
 

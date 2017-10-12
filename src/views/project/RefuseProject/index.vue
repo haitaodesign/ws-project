@@ -53,7 +53,7 @@
 
       </Form> 
       <Table :columns="columns10" :data="selectFinPro"></Table>
-      <Page :total="100" show-sizer show-elevator class='Pages' ></Page>
+      <Page :total="total" show-sizer show-elevator class='Pages':show-total="true" @on-change="pageChange" @on-page-size-change="pagesizeChange" :page-size-opts="pagesizeoption" ></Page>
   </div>
 </template>
 <script>
@@ -154,7 +154,9 @@ export default {
       },
       model:[],
       deptData:[],
-      createrData:[]
+      createrData:[],
+      total:null,
+      pagesizeoption:[10,20,30]
     }
   },
   created(){
@@ -166,9 +168,9 @@ export default {
           getselectRecPro(this.parms).then(res=>{
               if(res.data.code === 200){
                   this.selectFinPro = res.data.data;
-                  this.pages = res.data.page.total
+                  this.total = res.data.page.total
                   console.log(res.data)
-                  console.log(this.pages)
+                  console.log(this.total)
               }
           })
       },
@@ -227,6 +229,16 @@ export default {
     // 点击查询请求数据
     searchForm(){
       this.initData();
+    },
+      // 页码改变时的数据
+    pageChange(value){
+      this.params.current=value;
+      this.initListData();
+    },
+    // 页面条数改变时的事件
+    pagesizeChange(value){
+      this.params.pageSize = value;
+      this.initListData();
     },
      
   }
