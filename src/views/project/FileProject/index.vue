@@ -100,7 +100,7 @@ export default {
             return h('div',[
               h('router-link',{
                props:{
-                  to:'setupapprvalproject/'+id
+                  to:'fileproject/'+id
                 }
               },proname),
               h('div', prodeclare)

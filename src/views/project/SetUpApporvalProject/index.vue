@@ -267,6 +267,7 @@ export default {
     // 点击查询请求数据
     searchForm(){
       this.initData();
+      console.log()
     },
       // 页码改变时的数据
     pageChange(value){
