@@ -189,3 +189,14 @@ export function getselectInsertProReturnLog(data){
         }
     })
 }
+//日报导出
+export function getexportDayReport(data){
+    return fetch({
+        url:'/exportDayReport',
+        method:'post',
+        data:{
+           Date:'2010-01-01',
+           type:1
+        }
+    })
+}

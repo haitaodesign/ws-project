@@ -1,11 +1,40 @@
 <template>
 <div>
   <PageTitle :BreadData="breadData"></PageTitle>
+  <Button type="primary" @click='educe' style='width: 100px;margin:10px 0px'>导出</Button>
     <Tabs value="name1">
         <TabPane label="项目日报" name="name1"> <Table border :columns="columns1" :data="proReports"></Table></TabPane>
         <TabPane label="任务日报" name="name2"> <Table border :columns="columns2" :data="selectTaskReport"></Table></TabPane>
         <TabPane label="子任务日报" name="name3"> <Table border :columns="columns3" :data="selectSubtaskRepor"></Table></TabPane>
     </Tabs>
+  <Modal
+        v-model="isShow" 
+        @on-ok="ok"
+        @on-cancel="cancel" >
+        <Form :model="Daily" :label-width="80" style='width:300px;'>
+         <FormItem label="选择日期">
+            <Row>
+                <Col span="24">
+                    <FormItem prop="date">
+                        <DatePicker type="date" placeholder="选择日期" v-model="Daily.date"></DatePicker>
+                    </FormItem>
+                </Col>
+                
+            </Row>
+        </FormItem>
+        <FormItem label="日报类型" prop="city" style='width:280px;'>
+            <Select v-model="Daily.type" placeholder="请选择所在地">
+                <Option value="1">项目日报</Option>
+                <Option value="2">任务日报</Option>
+                <Option value="3">子任务日报</Option>
+            </Select>
+        </FormItem>
+   
+       
+     
+    </Form>
+  
+  </Modal>  
 </div>    
 </template>
 <script>
@@ -16,6 +45,8 @@ import subtaskLogs from './subtaskLogs'
 import {getselectTaskReport} from '../../../api/requestdata.js'
 import {getproReports} from '../../../api/requestdata'
 import {getselectSubtaskReport} from '../../../api/requestdata'
+// 导出日报
+import {getexportDayReport} from '../../../api/requestdata'
 export default {
   components:{
     PageTitle
@@ -128,7 +159,13 @@ export default {
       proReports:[],
       all:'',
       selectTaskReport:[],
-      selectSubtaskRepor:[]
+      selectSubtaskRepor:[],
+      isShow: false,
+      Daily:{
+        data:'',
+        type:''
+      }
+     
     }
   },
   created(){
@@ -162,8 +199,24 @@ export default {
           // console.log(this.selectTaskReport)
         }
       })
-     },
-    }
+    },
+    educe(){
+      this.isShow= true;
+    },
+    cancel(){
+      this.$Message.info('点击了取消');
+    },
+    ok(){
+      getexportDayReport(this.Daily).then(res=>{
+        if(res.data.code === 200){
+          console.log(res.data)
+        }
+      })
+      console.log(this.Daily.type)
+      this.$Message.info('导出数据');
+    },
+  
+  }
   }
 </script>
 <style scoped>

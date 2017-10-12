@@ -238,7 +238,7 @@ export default {
     initData(){
      getUpProjectList(this.parms).then(res=>{
          if(res.data.code === 200){
-          //  console.log(res.data)
+           console.log(res.data)
           this.ProjectList = res.data.data;
           this.total = res.data.page.total;
           this.objectId = {
@@ -307,7 +307,7 @@ export default {
     // 点击查询请求数据
     searchForm(){
       this.initData();
-      console.log()
+      
     },
       // 页码改变时的数据
     pageChange(value){
