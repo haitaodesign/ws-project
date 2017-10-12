@@ -59,7 +59,7 @@ const constantRouteMap=[
         component:TaskAssignDetails
       },{
         path:'/myproject/:id/:proId/:taskId',
-        name:'子任务详情',
+        name:'子任务详情页',
         component:ChildTaskDetails
       },{
         path:'/onlineapprovalproject',
