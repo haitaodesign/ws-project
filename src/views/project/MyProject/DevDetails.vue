@@ -468,7 +468,22 @@ export default {
         key: 'explain'
       }, {
         title: '附件',
-        key: 'filepath'
+        key: 'filepath',
+        render:(h,params)=>{
+        const row = params.row;
+        const fileurl = row.filepath;
+        if(fileurl!==''){
+          return h('a',{
+            domProps:{
+              target:'_blank',
+              href:fileurl
+            }
+          },'点击下载');
+        }else{
+          return h('div',{
+          },'无附件');
+        }
+        }
       }],
       logRecordList: [],
       createrData: [],
@@ -515,8 +530,18 @@ export default {
         key: 'filepath',
         render:(h,params)=>{
           const row = params.row;
-          const fileurl = row.filePath;
-          h('a',)
+          const fileurl = row.filepath;
+          if(fileurl!==''){
+            return h('a',{
+              domProps:{
+                target:'_blank',
+                href:fileurl
+              }
+            },'点击下载');
+          }else{
+            return h('div',{
+            },'无附件');
+          }
         }
       }],
       secondLevelData: [],

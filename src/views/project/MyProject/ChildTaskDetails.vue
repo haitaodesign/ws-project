@@ -143,7 +143,7 @@
         <Button type="default" @click="cancel('partInParams')">取消</Button>
       </div>
     </Modal> -->
-    <Modal v-model="addlogshow" title="添加开发日志" @on-cancel="logcancel('addDevLogList')">
+    <!-- <Modal v-model="addlogshow" title="添加开发日志" @on-cancel="logcancel('addDevLogList')">
       <Form ref="addDevLogList" :model="addDevLogList" :rules="devLogRules" :label-width="100">
         <FormItem prop="type" label="日志类型：">
           <Select v-model="addDevLogList.type" @on-change="showprogress" placeholder="请选择">
@@ -170,7 +170,7 @@
         <Button type="primary" @click="logok('addDevLogList')">提交</Button>
         <Button type="default" @click="logcancel('addDevLogList')">取消</Button>
       </div>
-    </Modal>
+    </Modal> -->
   </div>
 </template>
 <script>
@@ -199,6 +199,7 @@ export default {
           return date && date.valueOf() < Date.now() - 86400000;
         }
       },
+      projectSubTask:{},
       // squadColumns: [{
       //   title: '编号',
       //   key: 'taskId',
@@ -444,7 +445,22 @@ export default {
         key: 'explain'
       }, {
         title: '附件',
-        key: 'filepath'
+        key: 'filepath',
+         render:(h,params)=>{
+          const row = params.row;
+          const fileurl = row.filepath;
+          if(fileurl!==''){
+            return h('a',{
+              domProps:{
+                target:'_blank',
+                href:fileurl
+              }
+            },'点击下载');
+          }else{
+            return h('div',{
+            },'无附件');
+          }
+        }
       }],
       logRecordList: [],
       // createrData: [],
@@ -622,6 +638,7 @@ export default {
     initLogRecordList() {
       getSubTaskDetails(this.recordLogParams).then(res => {
         this.logRecordList = res.data.data[0].subtaskLog;
+        this.projectSubTask = res.data.data[0].projectSubTask;
       }).catch(err => {
 
       })
