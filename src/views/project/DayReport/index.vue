@@ -211,11 +211,12 @@ export default {
       this.$Message.info('点击了取消');
     },
     ok(){
-      getexportDayReport(this.Daily).then(res=>{
-        if(res.data.code === 200){
-          console.log(res.data)
-        }
-      })
+      
+      // getexportDayReport(this.Daily).then(res=>{
+      //   if(res.data.code === 200){
+      //     console.log(res.data)
+      //   }
+      // })
       console.log(this.Daily.type)
       this.$Message.info('导出数据');
     },
