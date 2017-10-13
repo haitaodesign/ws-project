@@ -76,25 +76,25 @@
       </Col>
     </Row>
 
-      <Modal v-model="isUpDown" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
-    <h2 style='color:#000;margin-bottom:10px;'>项目驳回</h2>
-    <Form  :model="objectId"  :label-width="110">
-       <FormItem label="请输入驳回的原因">
-            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
-        </FormItem>
+    <!-- <Modal v-model="isUpDown" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
+      <h2 style='color:#000;margin-bottom:10px;'>项目驳回</h2>
+      <Form  :model="params"  :label-width="110">
+          <FormItem label="请输入驳回的原因">
+              <Input v-model="params.explain" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+          </FormItem>
 
-    </Form>
+      </Form>
   </Modal>
   <Modal v-model="isOk" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
 
     <h2 style='color:#000;margin-bottom:10px;'>项目通过</h2>
-    <Form  :model="objectId"  :label-width="110">
+    <Form  :model="params"  :label-width="110">
        <FormItem label="请输入通过的原因">
-            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+            <Input v-model="params.explain" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
         </FormItem>
 
     </Form>
-  </Modal>
+  </Modal> -->
 
   </div>
 </template>
@@ -167,18 +167,20 @@ export default {
       RecProInfo: [],
       log: [],
       baseInfo: [],
-       objectId:{
+      objectId:{
         proid:'',
         id:'',
         creatName:'小',
         explain:'',
         prostate:''
       },
+      params:[]
     }
   },
   created() {
     console.log(this.$route);
     this.initData()
+    console.log(this.params)
   },
   methods: {
     initData() {
@@ -192,13 +194,19 @@ export default {
           this.RecProInfo = res.data.data[0].taskList;
           this.baseInfo = res.data.data[0].projectInfo;
           this.log = res.data.data[0].logRecordList;
-          this.baseInfo.prostate = res.data.data[0].projectInfo.prostate
-          this.objectId = {
-            proid: res.data.data[0].projectInfo.proid,
-            prostate: res.data.data[0].projectInfo.prostate,
-            id:res.data.data[0].projectInfo.id
-          }
-          console.log(this.objectId)
+          this.baseInfo.prostate = res.data.data[0].projectInfo.prostate;
+          this.params.push({
+            prostate:res.data.data[0].projectInfo.prostate,
+            id:res.data.data[0].projectInfo.id,
+            proId:res.data.data[0].projectInfo.proid
+          })
+          // console.log(this.params)
+          // this.objectId = {
+          //   proid: res.data.data[0].projectInfo.proid,
+          //   prostate: res.data.data[0].projectInfo.prostate,
+          //   id:res.data.data[0].projectInfo.id
+          // }
+          // console.log(this.objectId)
           switch(this.baseInfo.prostate){
             case '1':
             this.baseInfo.prostate = '立项待审批';
@@ -228,11 +236,89 @@ export default {
       console.log(this.$route);
     },
     upDown() {
-      this.isUpDown = true;
+      // this.isUpDown = true;
+      
+     
+     
+       this.$Modal.confirm({
+        
+        
+        onOk: () => {
+          this.$Message.info('点击了确定');
+          console.log(this.params)
+           getUpDetails(this.params).then(res => {
+              if(res.data.code === 200){
+                console.log(res.data)
+              }
+          })
+        },
+        onCancel: () => {
+          this.$Message.info('点击了取消');
+        },
+        render: (h) => {
+          return h('Input', {
+            props: {
+              value: this.value,
+              autofocus: true,
+              type: 'textarea',
+              rows: 4,
+              placeholder: '请输入驳回的理由...'
+            },
+            on: {
+              input: (val) => {
+                this.params.explain = val;
+               
+
+              }
+
+            },
+            cancel: {
+              input: (val) => {
+                this.params.explain = val;
+              }
+            }
+          })
+        }
+      });
 
     },
     comit() {
-      this.isOk = true;
+      
+      
+       this.$Modal.confirm({
+        
+        
+        onOk: () => {
+          this.$Message.info('点击了确定');
+        },
+        onCancel: () => {
+          this.$Message.info('点击了取消');
+        },
+         render: (h) => {
+          return h('Input', {
+            props: {
+              value: this.value,
+              autofocus: true,
+              type: 'textarea',
+              rows: 4,
+              placeholder: '请输入通过的理由...'
+            },
+            on: {
+              input: (val) => {
+                this.params[0].explain = val;
+               
+
+              }
+
+            },
+            cancel: {
+              input: (val) => {
+                this.params[0].explain = val;
+              }
+            }
+          })
+        }
+      });
       
     },
     sure(name) {
