@@ -2,7 +2,7 @@
   <div class="clearfix">
       <PageTitle :BreadData="breadData"></PageTitle>
       <Row>
-        <Col span="4" offset="8"><Button type="primary" @click="subTaskClick">提交子任务</Button></Col>
+        <Col span="4" offset="8"><Button type="primary" @click="subTaskClick">提交任务</Button></Col>
       </Row>
       <Row :gutter="20">
         <Col span="12" class="colmargin-top">
@@ -76,22 +76,24 @@
                 <TabPane label="开发日志" name="1" style="padding:10px;">
                     <div style="margin-top:10px;">
                     <Row style="margin-bottom:10px;">
+                       <Col span="4">
+                        <Button type="primary" @click="addDevLogClick" style="margin-bottom:10px;">添加开发日志</Button>
+                      </Col>
                       <Col span="8">
                         <Select placeholder="类型："  @on-change="onTypeChange" style="width:200px">
-                            <Option value="1">项目</Option>
                             <Option value="2">任务</Option>
                             <Option value="3">子任务</Option>
                         </Select>
                       </Col>
                       <Col span="8">
-                        <Select placeholder="二级类型："  style="width:200px">
-                            <!-- <Option v-for="item in secondLevelData" :key="item.taskId" v-model:value="item.taskName"></Option> -->
+                        <Select placeholder="二级类型："  style="width:200px" @on-change="onSubTypeChange" v-show="isShow">
+                            <Option v-for="item in secondLevelData" :key="item.subtaskId" v-model:value="item.subtaskName"></Option>
                         </Select>
                       </Col>
                     </Row>
                     <Row>
-                        <!-- <Table border height="500" :data="devLogList" :columns="devLogColums" class="apply-squad">
-                        </Table> -->
+                        <Table border height="500" :data="devLogList" :columns="devLogColums" class="apply-squad">
+                        </Table>
                     </Row>
                   </div>    
                 </TabPane>
@@ -140,6 +142,34 @@
           <Button type="default" @click="cancel('subTaskParams')">取消</Button>
         </div>
       </Modal>
+      <Modal v-model="addlogshow" title="添加开发者日志" @on-cancel="logcancel('addDevLogList')">
+        <Form ref="addDevLogList" :model="addDevLogList" :rules="devLogRules" :label-width="100">
+          <FormItem prop="type" label="日志类型：">
+            <Select v-model="addDevLogList.type" @on-change="showprogress" placeholder="请选择">
+              <Option value="1">开始</Option>
+              <Option value="2">需求调整</Option>
+              <Option value="3">会议</Option>
+              <Option value="4">更新</Option>
+              <Option value="5">预验收</Option>
+            </Select>
+          </FormItem>
+          <FormItem prop="progress" label="项目进度：" v-show="isshowprogress">
+            <InputNumber :max="100" :min="0" v-model="addDevLogList.progress"></InputNumber>
+          </FormItem>
+          <FormItem prop="explain" label="备注：">
+            <Input type="textarea" :rows="3" placeholder="请输入内容" v-model="addDevLogList.explain"></Input>
+          </FormItem>
+          <FormItem label="上传附件：">
+            <Upload action="http://192.168.3.26:5826/uploadFile" :on-success="uploadsuccess">
+              <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
+            </Upload>
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <Button type="primary" @click="logok('addDevLogList')">提交</Button>
+          <Button type="default" @click="logcancel('addDevLogList')">取消</Button>
+        </div>
+      </Modal>
   </div>
 </template>
 <script>
@@ -152,6 +182,7 @@ import { commitTask } from '../../../api/myproject';
 import { getMembersByLoginUser } from '../../../api/myproject';
 import { getMembersBySquadId } from '../../../api/myproject';
 import { getSecondLeverType } from '../../../api/myproject';
+import { addProDeveLog } from '../../../api/myproject';
 import {getDeptData} from '../../../api/requestdata';
 import {getGroupData} from '../../../api/requestdata';
 export default {
@@ -356,7 +387,7 @@ export default {
           proId:this.$route.params.proId,
           state:2,
           type:2,
-          secondLevelId:''
+          secondLevelId:this.$route.query.taskId
         },
         logRecordColumn:[{
           title:'类型',
@@ -414,29 +445,81 @@ export default {
           key:'explain'
         },{
           title:'附件',
-          key:'filepath'
+          key:'filepath',
+          render:(h,params)=>{
+            const row = params.row;
+            const fileurl = row.filepath;
+            if(fileurl!==''){
+              return h('a',{
+                domProps:{
+                  target:'_blank',
+                  href:fileurl
+                }
+              },'点击下载');
+            }else{
+              return h('div',{
+              },'无附件');
+            }
+        }
         }],
         logRecordList:[],
       //   createrData:[],
         devLogList:[],
-      //   devLogColums:[{
-      //     title:'类型',
-      //     key:'type'
-      //   },{
-      //     title:'时间',
-      //     key:'date'
-      //   },{
-      //     title:'操作部门/人',
-      //     key:'emp'
-      //   },{
-      //     title:'说明',
-      //     key:'explain'
-      //   },{
-      //     title:'附件',
-      //     key:'filepath'
-      //   }],
-      //   secondLevelData:[],
-        
+        devLogColums:[{
+          title:'类型',
+          key:'type'
+        },{
+          title:'时间',
+          key:'date'
+        },{
+          title:'操作部门/人',
+          key:'emp'
+        },{
+          title:'说明',
+          key:'explain'
+        },{
+          title:'附件',
+          key:'filepath',
+          render:(h,params)=>{
+          const row = params.row;
+          const fileurl = row.filepath;
+          if(fileurl!==''){
+            return h('a',{
+              domProps:{
+                target:'_blank',
+                href:fileurl
+              }
+            },'点击下载');
+          }else{
+            return h('div',{
+            },'无附件');
+          }
+        }
+        }],
+        secondLevelData:[],
+        isShow:false,
+        addlogshow:false,
+        addDevLogList: {
+          id: this.$route.params.id,
+          proId: this.$route.params.proId,
+          type: '',
+          progress: 0,
+          explain: '',
+          filePath: '',
+          userName: 'ff',
+          taskId: this.$route.query.taskId,
+          subtaskId: 1,
+          addType: 2
+        },
+        devLogRules: {
+          type: [
+            { required: true, message: '请填写项目类型', trigger: 'change' }
+          ],
+          explain: [
+            { required: true, message: '请填写备注信息', trigger: 'change' }
+          ]
+        },
+        isshowprogress: false,
     }    
   },
   created(){
@@ -454,7 +537,6 @@ export default {
         proId:this.$route.params.proId,
         taskId:this.$route.query.taskId,
       };
-      console.log(this.$route);
       getTaskDetails(params).then(res=>{
         const data = res.data.data[0].projectTask;
         this.logRecordList = res.data.data[0].logRecordList;
@@ -567,10 +649,8 @@ export default {
     },
     initDevLogList(){
       getMyProjectDetailsLog(this.devLogParams).then(res=>{
-        console.log(res);
-        // this.devLogList = res.data.data[0].DevLogList;
+        this.devLogList = res.data.data[0].DevLogList;
       }).catch(err=>{
-
       })
     },
     onclick(){
@@ -611,20 +691,18 @@ export default {
       let currvalue = value;
       let params = {
           id:this.$route.params.id,
-          proId:this.$route.query.proId,
-          type:2
+          proId:this.$route.params.proId,
+          type:2,
       };
       this.secondLevelData = [];
       switch(currvalue){
-        case '1':
-          this.initDevLogList();
-        break;
         case '2':
-          this.getSecondLeverList(params);
+          this.isShow = false;
           this.devLogParams.type = 2;
           this.initDevLogList();
         break;
         case '3':
+          this.isShow = true;
           params.type = 3;
           this.devLogParams.type = 2;
           this.getSecondLeverList(params);
@@ -632,9 +710,12 @@ export default {
         break;
       }
     },
+    onSubTypeChange(value){
+      this.devLogParams.secondLevelId = value;
+      this.initDevLogList();
+    },
     getSecondLeverList(params){
       getSecondLeverType(params).then(res =>{
-        console.log(res);
         if(res.data!=null){
           this.secondLevelData = res.data.data;
         }
@@ -685,7 +766,49 @@ export default {
            
         }
       })
-    }
+    },
+    addDevLogClick() {
+      this.addlogshow = true;
+    },
+    showprogress(value) {
+      if (value == 4) {
+        this.isshowprogress = true;
+      } else {
+        this.isshowprogress = false;
+      }
+    },
+    uploadsuccess(response,file,filelist){
+      if(response.code == 200){
+        this.addDevLogList.filePath = response.data.uploadPath;
+      }else {
+        this.$Message.error('上传失败，请重新上传');
+      }
+    },
+    logok(name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          addProDeveLog(this.addDevLogList).then(res => {
+            if (res.data.code == 200) {
+              this.initDevLogList();
+              this.$Message.success(res.data.msg);
+            } else {
+              this.$Message.error(res.data.msg);
+            }
+            this.addlogshow = false;
+            this.$refs[name].resetFields();
+          }).catch(err => {
+            this.$Message.error('系统异常！');
+          })
+        } else {
+          // 不关闭弹窗，提示错误信息
+          this.$Message.error('表单验证失败，请填写完整的信息！');
+        }
+      })
+    },
+    logcancel(name) {
+      this.$refs[name].resetFields();
+      this.addlogshow = false;
+    },
   }
 }
 </script>
