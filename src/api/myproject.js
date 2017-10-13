@@ -123,3 +123,38 @@ export function addProDeveLog(params){
     });
 }
 
+/**
+ * 审批通过
+ * @param {*} data 
+ */
+export function passOrReject(params){
+    return fetch({
+        url:'/passOrReject',
+        method:'post',
+        data:params
+    });
+}
+
+/**
+ * 提交任务/子任务
+ * @param {*} data 
+ */
+export function commitTask(params){
+    return fetch({
+        url:'/commitTask',
+        method:'post',
+        data:params
+    });
+}
+
+/**
+ * 子任务详细信息
+ * @param {*} data 
+ */
+export function getSubTaskDetails(params){
+    return fetch({
+        url:'/getSubTaskDetails',
+        method:'post',
+        data:params
+    });
+}

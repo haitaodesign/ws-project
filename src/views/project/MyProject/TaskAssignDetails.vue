@@ -2,7 +2,7 @@
   <div class="clearfix">
       <PageTitle :BreadData="breadData"></PageTitle>
       <Row>
-        <Col span="4" offset="8"><Button type="primary">提交子任务</Button></Col>
+        <Col span="4" offset="8"><Button type="primary" @click="subTaskClick">提交子任务</Button></Col>
       </Row>
       <Row :gutter="20">
         <Col span="12" class="colmargin-top">
@@ -43,7 +43,7 @@
           <Card dis-hover class="colmargin-top">
              <Tabs class="home-push">
                 <TabPane label="日志记录" name="0" style="padding:10px;">
-                  <!-- <Table border height="200" :data="logRecordList" :columns="logRecordColumn"></Table> -->
+                  <Table border height="200" :data="logRecordList" :columns="logRecordColumn"></Table>
                   <div style="margin-top:10px;">
                     <Row style="margin-bottom:10px;">
                       <Col span="4">
@@ -147,6 +147,8 @@ import PageTitle from '../../components/PageTitle';
 import { getTaskDetails } from '../../../api/myproject';
 import { getSubTaskList } from '../../../api/myproject';
 import { handleSubTaskList } from '../../../api/myproject';
+import { getMyProjectDetailsLog } from '../../../api/myproject';
+import { commitTask } from '../../../api/myproject';
 import { getMembersByLoginUser } from '../../../api/myproject';
 import { getMembersBySquadId } from '../../../api/myproject';
 import { getSecondLeverType } from '../../../api/myproject';
@@ -348,74 +350,74 @@ export default {
       //     type:1,
       //     secondLevelId:''
       //   },
-      //   devLogParams:{
-      //     id:this.$route.params.id,
-      //     proId:this.$route.query.proId,
-      //     state:2,
-      //     type:1,
-      //     secondLevelId:''
-      //   },
-      //   logRecordColumn:[{
-      //     title:'类型',
-      //     key:'type',
-      //     render:(h,params)=>{
-      //       let type = params.row.type;
-      //       let text =''
-      //       switch(type){
-      //         case '1':
-      //         text = '创建';
-      //         break;
-      //         case '2':
-      //         text = '立项待审批';
-      //         break;
-      //         case '3':
-      //         text = '提交上线';
-      //         break;
-      //         case '4':
-      //         text = '上线审批（完成）';
-      //         break;
-      //         case '5':
-      //         text = '驳回';
-      //         break;
-      //          case '6':
-      //         text = '作废';
-      //         break;
-      //         case '7':
-      //         text = '分配';
-      //         break;
-      //         case '8':
-      //         text = '修改';
-      //         break;
-      //         case '9':
-      //         text = '删除';
-      //         break;
-      //         case '10':
-      //         text = '回复逾期';
-      //         break;
-      //          case '11':
-      //         text = '附件';
-      //         break;
-      //         default:
-      //         text = '状态数据异常';
-      //       }
-      //       return h('div',text);
-      //     }
-      //   },{
-      //     title:'时间',
-      //     key:'date'
-      //   },{
-      //     title:'操作人',
-      //     key:'emp'
-      //   },{
-      //     title:'说明',
-      //     key:'explain'
-      //   },{
-      //     title:'附件',
-      //     key:'filepath'
-      //   }],
-      //   logRecordList:[],
+        devLogParams:{
+          id:this.$route.params.id,
+          proId:this.$route.params.proId,
+          state:2,
+          type:2,
+          secondLevelId:''
+        },
+        logRecordColumn:[{
+          title:'类型',
+          key:'type',
+          render:(h,params)=>{
+            let type = params.row.type;
+            let text =''
+            switch(type){
+              case '1':
+              text = '创建';
+              break;
+              case '2':
+              text = '立项待审批';
+              break;
+              case '3':
+              text = '提交上线';
+              break;
+              case '4':
+              text = '上线审批（完成）';
+              break;
+              case '5':
+              text = '驳回';
+              break;
+               case '6':
+              text = '作废';
+              break;
+              case '7':
+              text = '分配';
+              break;
+              case '8':
+              text = '修改';
+              break;
+              case '9':
+              text = '删除';
+              break;
+              case '10':
+              text = '回复逾期';
+              break;
+               case '11':
+              text = '附件';
+              break;
+              default:
+              text = '状态数据异常';
+            }
+            return h('div',text);
+          }
+        },{
+          title:'时间',
+          key:'date'
+        },{
+          title:'操作人',
+          key:'emp'
+        },{
+          title:'说明',
+          key:'explain'
+        },{
+          title:'附件',
+          key:'filepath'
+        }],
+        logRecordList:[],
       //   createrData:[],
-      //   devLogList:[],
+        devLogList:[],
       //   devLogColums:[{
       //     title:'类型',
       //     key:'type'
@@ -442,7 +444,7 @@ export default {
       this.initUserData();
       // this.initDeptData();
       // this.initLogRecordList();
-      // this.initDevLogList();
+      this.initDevLogList();
   },
   methods:{
     initDetailsData(){
@@ -454,6 +456,7 @@ export default {
       console.log(this.$route);
       getTaskDetails(params).then(res=>{
         const data = res.data.data[0].projectTask;
+        this.logRecordList = res.data.data[0].logRecordList;
         this.projectTask.squadId = data.squadId;
         this.projectTask.taskname = data.taskname;
         this.projectTask.createDate = data.createDate;
@@ -563,7 +566,8 @@ export default {
     },
     initDevLogList(){
       getMyProjectDetailsLog(this.devLogParams).then(res=>{
-        this.devLogList = res.data.data[0].DevLogList;
+        console.log(res);
+        // this.devLogList = res.data.data[0].DevLogList;
       }).catch(err=>{
 
       })
@@ -635,7 +639,52 @@ export default {
         }
       })
     },
-  
+    subTaskClick(){
+      let params = {
+        taskId:this.$route.query.taskId,
+        userName:'ddd',
+        explain:'',
+        type:1
+      };
+      this.$Modal.confirm({
+        render: (h) => {
+          return h('Input', {
+            props: {
+              value: this.value,
+              autofocus: true,
+              type: 'textarea',
+              rows: 4,
+              placeholder: '请输入上线意见...'
+            },
+            on: {
+              input: (val) => {
+                params.explain = val;
+              }
+            }
+          })
+        },
+        loading:true,
+        onOk:()=>{
+            if(params.explain!==''){
+              commitTask(params).then(res => {
+                const data = res.data;
+                if(data.code ==200){
+                  this.$Message.success(res.data.msg);
+                }else{
+                  this.$Message.error(res.data.msg);
+                }
+                }).catch(err => {
+                  this.$Message.error('系统异常！');
+                })
+                this.$Modal.remove();
+              }else{
+                 this.$Message.error('请输入审批意见');
+                 this.$Modal.remove();
+              }
+           
+        }
+      })
+    }
   }
 }
 </script>
