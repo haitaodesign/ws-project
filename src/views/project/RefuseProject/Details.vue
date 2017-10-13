@@ -6,7 +6,10 @@
             <Tabs class="home-push">
                 <TabPane label="基本信息" name="0" style="padding:10px;">
                   <ul class='wrap'>
-                    <li>项目类型：<span>{{baseInfo.protype}}</span></li>
+                    <li>项目类型：
+                      <span v-if='baseInfo.protype === "1"'>产品</span>
+                      <span v-else-if='baseInfo.protype === "2"'>活动</span>
+                    </li>
                     <li>项目标题：<span>{{baseInfo.proname}}</span></li>
                     <li>项目概况：<span>{{baseInfo.prodeclare}}</span></li>
                   </ul>    

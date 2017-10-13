@@ -16,7 +16,9 @@
             <Row>
                 <Col span="24">
                     <FormItem prop="date">
-                        <DatePicker type="date" placeholder="选择日期" v-model="Daily.date"></DatePicker>
+                        <DatePicker :value="Daily.Date" type="date" 
+                        format="yyyy-MM-dd" placeholder="选择日期" 
+                        v-model="Daily.Date" @on-change='onChange'></DatePicker>
                     </FormItem>
                 </Col>
                 
@@ -162,13 +164,14 @@ export default {
       selectSubtaskRepor:[],
       isShow: false,
       Daily:{
-        data:'',
+        Date:'',
         type:''
       },
       params:{
         current:1,
         pageSize:5
       }
+
      
     }
   },
@@ -176,7 +179,7 @@ export default {
      this.timerData();
   },
   methods:{
-    timerData(params){
+    timerData(){
       //项目日报
       getproReports(this.params).then(res => {
         if (res.data.code === 200) {
@@ -211,15 +214,22 @@ export default {
       this.$Message.info('点击了取消');
     },
     ok(){
+      console.log(this.Daily)
+      getexportDayReport(this.Daily).then(res=>{
+        if(res.data.code === 200){
+          console.log(res.data)
+        }
+      })
       
-      // getexportDayReport(this.Daily).then(res=>{
-      //   if(res.data.code === 200){
-      //     console.log(res.data)
-      //   }
-      // })
-      console.log(this.Daily.type)
       this.$Message.info('导出数据');
     },
+    onChange(date){
+      
+        this.Daily.Date = date;
+       
+     
+     
+    }
   
   }
   }

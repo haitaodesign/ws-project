@@ -162,10 +162,10 @@ export default {
           //  console.log(objectId.explain)
             let objectId = {
               id: row.id,
-              proid: row.proid,
-              prostate: row.prostate,
+              proId: row.proid,
+              proState: row.prostate,
               explain: '',
-              creatName:''
+              creatName:'ddd'
             }
 
             return h('div',[
@@ -299,13 +299,13 @@ export default {
         pageSize:30,
         pages:0,
         total:0,
-        creatersquadId:'',
+        createrSquadId:'',
         creater:'',
         createDateStart:'',
         createDateEnd:'',
         planSDateEnd:'',
         planSDateStart:'',
-        protype:'',
+        proType:'',
         param:'',
         proName:''
         
@@ -330,19 +330,14 @@ export default {
     this.initDeptData()
   },
   methods:{
+    //初始化列表数据
     initData(){
      getUpProjectList(this.parms).then(res=>{
          if(res.data.code === 200){
            console.log(res.data)
           this.ProjectList = res.data.data;
           this.total = res.data.page.total;
-         
-      
-          
-      
-     
-      
-         }
+        }
       })
     },
         // 发起部门数据
