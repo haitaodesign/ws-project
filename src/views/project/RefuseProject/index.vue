@@ -82,15 +82,34 @@ export default {
           title:'项目名称',
           key:'proname',
           render:(h,obj)=>{
-            const proname = this.selectFinPro[obj.index].proname
-            const prodeclare = this.selectFinPro[obj.index].prodeclare
-            const id = this.selectFinPro[obj.index].id;
-            console.log(id);
+            // const proname = this.selectFinPro[obj.index].proname
+            // const prodeclare = this.selectFinPro[obj.index].prodeclare
+            // const id = this.selectFinPro[obj.index].id;
+            const row = obj.row;
+            const proname = row.proname;
+            const prodeclare = row.prodeclare;
+           
+           const routeparams ={
+            name:'项目驳回详情页',
+            params:{
+              id:row.id
+            },
+            query:{
+              proId:row.proid
+            }
+          }
             return h('div',[
-              h('router-link',{
-                props:{
-                  to:'collectionproject/'+id
+              h('h3',{
+               
+              style:{
+                color:'#2d8cf0',
+                cursor:'pointer'
+              },
+              on:{
+                click:()=>{
+                  this.$router.push(routeparams);
                 }
+              }
               },proname),
               h('div', prodeclare)
               ])
@@ -139,7 +158,7 @@ export default {
       pages:30,
       parms:{
         current:1,
-        pagesize:30,
+        pageSize:30,
         pages:0,
         total:0,
         creatersquadid:'',

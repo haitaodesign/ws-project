@@ -283,6 +283,7 @@ export default {
                       },
                       on: {
                           click: () => {
+                            
                             let params = {
                               taskId:this.$route.params.id,
                               subtaskId:row.subtaskId,

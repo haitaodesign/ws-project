@@ -50,30 +50,12 @@
       <Table :columns="columns10" :data="ProjectList"></Table>
       <Page :total="total" show-sizer show-elevator class='Pages':show-total="true" @on-change="pageChange" @on-page-size-change="pagesizeChange" :page-size-opts="pagesizeoption"></Page>
      
-  <Modal v-model="isUpDown" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
 
-    <h2 style='color:#000;margin-bottom:10px;'>项目驳回</h2>
-    <Form  :model="objectId"  :label-width="110">
-       <FormItem label="请输入驳回的原因" >
-            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"  placeholder="请输入..."></Input>
-        </FormItem>
-
-    </Form>
-  </Modal>
 
    
     
     
-  <Modal v-model="isOk" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
 
-    <h2 style='color:#000;margin-bottom:10px;'>项目通过</h2>
-    <Form  :model="objectId"  :label-width="110">
-       <FormItem label="请输入通过的原因">
-            <Input v-model="objectId.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
-        </FormItem>
-
-    </Form>
-  </Modal>
 
   </div>
 </template>
@@ -106,6 +88,7 @@ export default {
           key:'proname',
           render:(h,obj)=>{
             const row = obj.row;
+          
             // const proname = this.ProjectList[obj.index].proname;
             // const prodeclare = this.ProjectList[obj.index].prodeclare;
             // const id = this.ProjectList[obj.index].id;
@@ -115,7 +98,7 @@ export default {
             const proId = row.proid
             const routeparams ={
               name:'立项待审批详情页',
-              parms:{
+              params:{
                 id:row.id
               },
               query:{
@@ -174,6 +157,17 @@ export default {
           width: 150,
           align: 'center',
           render:(h,obj)=>{
+            console.log(obj);
+            const row = obj.row;
+          //  console.log(objectId.explain)
+            let objectId = {
+              id: row.id,
+              proid: row.proid,
+              prostate: row.prostate,
+              explain: '',
+              creatName:''
+            }
+
             return h('div',[
               h('Button',{
                 props:{
@@ -183,10 +177,59 @@ export default {
                 style:{
                   marginRight: '5px'
                 },
+                
                 on:{
                   click:()=>{
-                        this.isOk = true;
-                  
+                    this.$Modal.confirm({
+                    onOk: () => {
+                        this.$Message.info('点击了确定');
+                            
+                      
+                        this.obs(objectId)
+                        getpassOrReject(objectId).then(res => {
+                          if (res.data.code === 200) {
+                            console.log(res.data)
+
+                          }
+                        })
+                    },
+                    onCancel: () => {
+                        this.$Message.info('点击了取消');
+                         this.obs(objectId)
+                        getpassOrReject(objectId).then(res => {
+                          if (res.data.code === 200) {
+                            console.log(res.data)
+
+                          }
+                        })
+                    },
+                      render: (h) => {
+                        return h('Input', {
+                          props: {
+                            value: this.value,
+                            autofocus: true,
+                            type: 'textarea',
+                            rows: 4,
+                            placeholder: '请输入通过的理由...'
+                          },
+                          on: {
+                            input: (val) => {
+                              objectId.explain = val;
+                              console.log(objectId)
+
+
+                            }
+
+                          },
+                          cancel: {
+                            input: (val) => {
+                              objectId.explain = val;
+                            }
+                          }
+                        })
+                      }
+                    })
+                    
                   }
                 }
                  
@@ -198,9 +241,51 @@ export default {
                 },
                 on:{
                   click:()=>{
-                    this.isUpDown = true;
-            
-                 
+                    this.$Modal.confirm({
+                  
+                    onOk: () => {
+                        this.$Message.info('点击了确定');
+                            
+                      
+                        this.obs(objectId)
+                        getpassOrReject(objectId).then(res => {
+                          if (res.data.code === 200) {
+                            console.log(res.data)
+
+                          }
+                        })
+                    },
+                    onCancel: () => {
+                        this.$Message.info('点击了取消');
+                    },
+                      render: (h) => {
+                        return h('Input', {
+                          props: {
+                            value: this.value,
+                            autofocus: true,
+                            type: 'textarea',
+                            rows: 4,
+                            placeholder: '请输入驳回意见...'
+                          },
+                          
+                          on: {
+                            input: (val) => {
+                              objectId.explain = val;
+                            },
+                           
+                       
+                          },
+                          cancel: {
+                            input: (val) => {
+                              objectId.explain = val;
+                            },
+                            click:()=>{
+
+                            }
+                          }
+                        })
+                      }
+                    })
                   }
                 }
               },'驳回')
@@ -226,20 +311,14 @@ export default {
         
       },
       data1:[],
-      objectId:{
-       
-        creatName:'小',
-        explain:'',
-        
-      },
+      objectId:{},
       total:null,
       ProjectList:[],
       deptData:[],
       createrData:[],
       pagesizeoption:[10,20,30],
-      isUpDown: false,
-      isOk: false,
-    
+   
+      
     
     
       
@@ -257,19 +336,12 @@ export default {
            console.log(res.data)
           this.ProjectList = res.data.data;
           this.total = res.data.page.total;
-          console.log(res.data.data.proid)
+         
+      
           
-          this.objectId = {
-            proid: res.data.data.proid,
-            id: res.data.data.id,
-            prostate: res.data.data.prostate
-          }
-          // this.objectId.push({
-          //    proid:res.data.data.proid,
-          //    id: res.data.data.id,
-          //   prostate: res.data.data.prostate
-          // })
-          console.log(this.objectId)
+      
+     
+      
          }
       })
     },
@@ -347,15 +419,7 @@ export default {
       getpassOrReject(this.objectId).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
-          // window.location.href = '/setupapprvalproject'
-          // console.log(this.objectId.proid)
-          // if(this.objectId.proid === 1){
-          //   this.$router.push('/setupapprvalproject');
-          // }else{
-          //   console.log("数据异常")
-          // }
-          // this.$router.push('/setupapprvalproject');
-          // this.isOk = false;
+        
           this.isUpDown = false;
           this.initData();
           this.$Message.info('已确定驳回');
@@ -381,31 +445,12 @@ export default {
     onclick(){
       
     },
-    ok() {
-      this.$Message.info('点击了确定');
-      console.log(this.objectId)
-      getpassOrReject(this.objectId).then(res => {
-        console.log(res.data)
-        console.log(this.objectId)
-        if (res.data.code === 200) {
-          // window.location.href = '/setupapprvalproject'
-          // console.log(this.objectId.proid)
-          // if(this.objectId.proid === 1){
-          //   this.$router.push('/setupapprvalproject');
-          // }else{
-          //   console.log("数据异常")
-          // }
-          // this.$router.push('/setupapprvalproject');
-          // this.isOk = false;
-         
-          this.initData();
-        
-        }
-      })
-    },
-    cancel() {
-      this.$Message.info('点击了取消');
-    }
+    obs(objectId) {
+     
+  }
+                           
+
+ 
   },
  
 }
