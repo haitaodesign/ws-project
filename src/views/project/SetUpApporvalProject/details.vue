@@ -16,7 +16,8 @@
         <TabPane label="基本信息" name="0" style="padding:10px;">
           <ul class='wrap'>
             <li>项目类型：
-              <span>{{baseInfo.protype}}</span>
+              <span v-if='baseInfo.protype === "1"'>产品</span>
+              <span v-else-if='baseInfo.protype === "2"'>活动</span>
             </li>
             <li>项目标题：
               <span>{{baseInfo.proname}}</span>
@@ -76,25 +77,6 @@
       </Col>
     </Row>
 
-    <!-- <Modal v-model="isUpDown" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
-      <h2 style='color:#000;margin-bottom:10px;'>项目驳回</h2>
-      <Form  :model="params"  :label-width="110">
-          <FormItem label="请输入驳回的原因">
-              <Input v-model="params.explain" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
-          </FormItem>
-
-      </Form>
-  </Modal>
-  <Modal v-model="isOk" :styles="{top: '200px'}" @on-ok="ok" @on-cancel="cancel" width="600">
-
-    <h2 style='color:#000;margin-bottom:10px;'>项目通过</h2>
-    <Form  :model="params"  :label-width="110">
-       <FormItem label="请输入通过的原因">
-            <Input v-model="params.explain" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
-        </FormItem>
-
-    </Form>
-  </Modal> -->
 
   </div>
 </template>
@@ -174,7 +156,7 @@ export default {
         explain:'',
         prostate:''
       },
-      params:[]
+     
     }
   },
   created() {
@@ -195,18 +177,7 @@ export default {
           this.baseInfo = res.data.data[0].projectInfo;
           this.log = res.data.data[0].logRecordList;
           this.baseInfo.prostate = res.data.data[0].projectInfo.prostate;
-          this.params.push({
-            prostate:res.data.data[0].projectInfo.prostate,
-            id:res.data.data[0].projectInfo.id,
-            proId:res.data.data[0].projectInfo.proid
-          })
-          // console.log(this.params)
-          // this.objectId = {
-          //   proid: res.data.data[0].projectInfo.proid,
-          //   prostate: res.data.data[0].projectInfo.prostate,
-          //   id:res.data.data[0].projectInfo.id
-          // }
-          // console.log(this.objectId)
+          // this.baseInfo.protype = res.data.data[0].protype;
           switch(this.baseInfo.prostate){
             case '1':
             this.baseInfo.prostate = '立项待审批';
@@ -229,6 +200,7 @@ export default {
             default:
             this.baseInfo.prostate = '状态数据异常';
           }
+          
         }
       })
     },
@@ -237,16 +209,22 @@ export default {
     },
     upDown() {
       // this.isUpDown = true;
-      
-     
+      let params = {
+        id:this.$route.params.id,
+        proId:this.$route.query.proId,
+        creatName:'ddd',
+        explain:'',
+        proState:5
+      };
+      console.log(params)
      
        this.$Modal.confirm({
         
         
         onOk: () => {
           this.$Message.info('点击了确定');
-          console.log(this.params)
-           getUpDetails(this.params).then(res => {
+         
+           getpassOrReject(params).then(res => {
               if(res.data.code === 200){
                 console.log(res.data)
               }
@@ -266,7 +244,7 @@ export default {
             },
             on: {
               input: (val) => {
-                this.params.explain = val;
+                params.explain = val;
                
 
               }
@@ -274,7 +252,7 @@ export default {
             },
             cancel: {
               input: (val) => {
-                this.params.explain = val;
+              params.explain = val;
               }
             }
           })
@@ -283,13 +261,24 @@ export default {
 
     },
     comit() {
-      
+       let params = {
+        id:this.$route.params.id,
+        proId:this.$route.query.proId,
+        creatName:'ddd',
+        explain:'',
+        proState:4
+      };
       
        this.$Modal.confirm({
         
         
         onOk: () => {
           this.$Message.info('点击了确定');
+           getpassOrReject(params).then(res => {
+              if(res.data.code === 200){
+                console.log(res.data)
+              }
+          })
         },
         onCancel: () => {
           this.$Message.info('点击了取消');
@@ -305,7 +294,7 @@ export default {
             },
             on: {
               input: (val) => {
-                this.params[0].explain = val;
+                params.explain = val;
                
 
               }
@@ -313,7 +302,7 @@ export default {
             },
             cancel: {
               input: (val) => {
-                this.params[0].explain = val;
+                params.explain = val;
               }
             }
           })

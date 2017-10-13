@@ -39,7 +39,7 @@ export function getselectOnPro(){
 })
 }
 //项目日报
-export function getproReports(){
+export function getproReports(data){
     return fetch({
         url:'/proReports',
         method:'post',
@@ -48,7 +48,7 @@ export function getproReports(){
 }
 
 //任务日报
-export function getselectSubtaskReport(){
+export function getselectSubtaskReport(data){
     return fetch({
         url:'/selectSubtaskReport',
         method:'post',
@@ -56,7 +56,7 @@ export function getselectSubtaskReport(){
     })
 }
 // 日报（子任务日报）
-export function getselectTaskReport(){
+export function getselectTaskReport(data){
     return fetch({
         url:'/selectTaskReport',
         method:'post',
