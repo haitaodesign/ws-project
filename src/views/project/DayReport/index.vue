@@ -218,17 +218,14 @@ export default {
       getexportDayReport(this.Daily).then(res=>{
         if(res.data.code === 200){
           console.log(res.data)
+          window.location.href = 'static/2017-10-13%20ProjectReport.xlsx'
         }
       })
       
       this.$Message.info('导出数据');
     },
     onChange(date){
-      
-        this.Daily.Date = date;
-       
-     
-     
+      this.Daily.Date = date;
     }
   
   }

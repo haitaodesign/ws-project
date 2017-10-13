@@ -34,7 +34,7 @@
               </Row>
           </FormItem>
           <FormItem label="项目类型">
-                <Select placeholder="请选择"  style="width:200px" v-model="parms.protype">
+                <Select placeholder="请选择"  style="width:200px" v-model="parms.proType">
                     <Option value="1">产品</Option>
                     <Option value="2">活动</Option>
                     
@@ -298,7 +298,7 @@ export default {
         current:1,
         pageSize:30,
         pages:0,
-        total:0,
+        
         createrSquadId:'',
         creater:'',
         createDateStart:'',
@@ -317,13 +317,7 @@ export default {
       deptData:[],
       createrData:[],
       pagesizeoption:[10,20,30],
-   
-      
-    
-    
-      
-  
-    }
+   }
   },
   created(){
     this.initData();
@@ -337,7 +331,10 @@ export default {
            console.log(res.data)
           this.ProjectList = res.data.data;
           this.total = res.data.page.total;
+          console.log()
         }
+      }).catch(err=>{
+        //错误显示
       })
     },
         // 发起部门数据
