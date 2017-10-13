@@ -112,16 +112,23 @@ export default {
       RecProInfo:[],
       log:[],
       baseInfo:[
-      ]
+      ],
+      
     }
   },
   created(){
-    console.log(this.$route.params);
+    console.log(this.$route.params.id);
+    console.log(this.$route.query.proId)
     this.initData();
   },
   methods:{
     initData(){
-      getselectRecProInfo().then(res=>{
+      // 获取id 和 proid
+      const params = {
+        id:this.$route.params.id,
+        proId:this.$route.query.proId
+      };
+      getselectRecProInfo(params).then(res=>{
         if(res.data.code === 200){
           this.RecProInfo = res.data.data[0].ProTask;
           this.baseInfo = res.data.data[0].ProInfo;

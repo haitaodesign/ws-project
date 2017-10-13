@@ -164,6 +164,10 @@ export default {
       Daily:{
         data:'',
         type:''
+      },
+      params:{
+        current:1,
+        pageSize:5
       }
      
     }
@@ -172,9 +176,9 @@ export default {
      this.timerData();
   },
   methods:{
-    timerData(){
+    timerData(params){
       //项目日报
-      getproReports().then(res => {
+      getproReports(this.params).then(res => {
         if (res.data.code === 200) {
           console.log(res.data.data)
           this.all = res.data;
@@ -186,14 +190,14 @@ export default {
         }
       })
         //任务日报
-      getselectSubtaskReport().then(res => {
+      getselectSubtaskReport(this.params).then(res => {
         if (res.data.code === 200) {
           this.selectSubtaskRepor = res.data.data;
           //  console.log(this.selectSubtaskRepor)
         }
       })
       //子任务日报
-      getselectTaskReport().then(res => {
+      getselectTaskReport(this.params).then(res => {
         if (res.data.code === 200) {
           this.selectTaskReport = res.data.data;
           // console.log(this.selectTaskReport)

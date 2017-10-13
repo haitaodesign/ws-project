@@ -182,7 +182,11 @@ export default {
   },
   methods: {
     initData() {
-      getUpDetails().then(res => {
+      const params = {
+        id:this.$route.params.id,
+        proId:this.$route.query.proId
+      }
+      getUpDetails(params).then(res => {
         console.log(res.data)
         if (res.data.code === 200) {
           this.RecProInfo = res.data.data[0].taskList;

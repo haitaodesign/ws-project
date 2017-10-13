@@ -43,10 +43,7 @@ export function getproReports(){
     return fetch({
         url:'/proReports',
         method:'post',
-        data:{
-            current:1,
-            pageSize: 5
-        }
+        data:data
     })
 }
 
@@ -55,10 +52,7 @@ export function getselectSubtaskReport(){
     return fetch({
         url:'/selectSubtaskReport',
         method:'post',
-        data:{
-            current: 1,
-            pageSize: 5
-        }
+        data:data
     })
 }
 // 日报（子任务日报）
@@ -66,10 +60,7 @@ export function getselectTaskReport(){
     return fetch({
         url:'/selectTaskReport',
         method:'post',
-        data:{
-            current:1,
-            pageSize:5 
-        }
+        data:data
     })
 }
 
@@ -108,10 +99,7 @@ export function getselectRecPro(data){
     return fetch({
         url:'/selectRecPro',
         method:'post',
-        data:{
-            current:1,
-            pageSize:5
-        }
+        data:data
     })
 }
 //驳回详情页
@@ -119,10 +107,7 @@ export function getselectRecProInfo(data){
     return fetch({
         url:'/selectRecProInfo',
         method:'post',
-        data:{
-            id:1,
-            proId:1
-        }
+        data:data
     })
 }
 //立项待审批
@@ -130,10 +115,7 @@ export function getUpProjectList(data){
     return fetch({
         url:'/getUpProjectList',
         method:'post',
-        data:{
-          current:1,
-          pageSize:5  
-        }
+        data:data
     })
 }
 //立项待审批详情页
@@ -141,20 +123,15 @@ export function getUpDetails(data){
     return fetch({
         url:'/getUpDetails',
         method:'post',
-        data:{
-            id:1,
-            proId:1
-        }
+        data:data
     })
 }
 //立项待审批驳回和通过
-export function getpassOrReject(){
+export function getpassOrReject(data){
     return fetch({
         url:'/passOrReject',
         method:'post',
-        data:{
-         
-        }
+        data:data
     })
 }
 //上线待审批列表

@@ -83,7 +83,7 @@ const constantRouteMap=[
         component:RefuseProject
       },{
         path:'/collectionproject/:id',
-        name:'驳回详情页',
+        name:'项目驳回详情页',
         component:RefuseProjectDetails
       },{
         path:'/countproject',
