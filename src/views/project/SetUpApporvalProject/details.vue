@@ -305,7 +305,7 @@ export default {
             },
             on: {
               input: (val) => {
-                this.params[0].explain = val;
+                this.params.explain = val;
                
 
               }
@@ -313,7 +313,7 @@ export default {
             },
             cancel: {
               input: (val) => {
-                this.params[0].explain = val;
+                this.params.explain = val;
               }
             }
           })
